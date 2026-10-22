@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESAL Fast - Service d'Achat et Livraison Rapide</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bf-red: #EF2B2D;
+            --bf-green: #009E49;
+            --bf-yellow: #FCD116;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b1321;
+            color: #f8fafc;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Effets aux couleurs du Burkina Faso */
+        .bf-gradient-text {
+            background: linear-gradient(135deg, var(--bf-red) 0%, var(--bf-yellow) 50%, var(--bf-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .bf-border-top {
+            border-top: 4px solid var(--bf-red);
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Animation d'arrière-plan : Achat & Livraison Express */
+        .delivery-bg-animation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 110px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.25;
+            overflow: hidden;
+        }
+
+        .delivery-runner {
+            position: absolute;
+            bottom: 15px;
+            white-space: nowrap;
+            animation: drive 12s linear infinite;
+        }
+
+        @keyframes drive {
+            0% { transform: translateX(-300px); }
+            100% { transform: translateX(100vw); }
+        }
+
+        .road-line {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--bf-red), var(--bf-yellow), var(--bf-green));
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20 relative">
+
+    <!-- Animation d'arrière-plan (Acheteur & Livreur en mouvement) -->
+    <div class="delivery-bg-animation">
+        <div class="delivery-runner flex items-center gap-6 text-2xl md:text-3xl font-bold">
+            <span class="text-amber-400">🛒 Achat / Colis</span>
+            <span>➔</span>
+            <span class="text-emerald-400">🛵💨📦 Livraison Express ESAL</span>
+            <span>➔</span>
+            <span class="text-sky-400">🏠 Client Satisfait</span>
+        </div>
+        <div class="road-line"></div>
+    </div>
+
+    <!-- Bandeau Devise Nationale du Burkina Faso -->
+    <div class="bg-gradient-to-r from-[#EF2B2D] via-[#FCD116] to-[#009E49] py-1.5 text-center text-slate-950 font-black text-xs tracking-widest uppercase shadow-md relative z-50">
+        🇧🇫 La patrie ou la mort, nous vaincrons 🇧🇫
+    </div>
+
+    <!-- En-tête / Navigation -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="relative bg-slate-900 p-2 rounded-2xl border border-amber-400/40 shadow-lg">
+                    <span class="text-2xl">⚡</span>
+                    <span class="absolute -top-1 -right-1 text-xs text-[#FCD116]">★</span>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight text-white flex items-center gap-1">
+                        ESAL <span class="text-[#FCD116]">Fast</span>
+                    </h1>
+                    <p class="text-[10px] text-slate-300 uppercase tracking-widest font-bold">Achat & Livraison Rapide</p>
+                </div>
+            </div>
+
+            <!-- Contacts WhatsApp & Bouton Masqué d'Admin -->
+            <div class="flex items-center space-x-2">
+                <a href="https://wa.me/message/K2KDSMMFVVPGK1?src=qr" target="_blank" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/40 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>65619298</span>
+                </a>
+
+                <!-- Accès Secret Administrateur -->
+                <button onclick="openAdminModal()" class="p-2 text-slate-500 hover:text-[#FCD116] transition" title="Connexion Administrateur">
+                    <i class="fa-solid fa-lock text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu Principal -->
+    <main class="max-w-4xl mx-auto px-4 pt-6 space-y-8 relative z-10">
+
+        <!-- Banner d'accueil aux couleurs nationales -->
+        <section class="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden bf-border-top shadow-2xl">
+            <div class="max-w-2xl space-y-4">
+                <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold">
+                    <span>★</span> Service Rapide & Fiable au Burkina Faso
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold leading-tight">
+                    Vos courses faites pour vous, <span class="bf-gradient-text">sans interrompre vos activités</span>.
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                    De nos jours, le temps manque souvent. Les courses, achats ou récupération de colis sont parfois faits en retard... Nous avons mis en place nos services pour vous aider en toute sécurité et confiance.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-3">
+                    <a href="#order-form" class="bg-gradient-to-r from-[#EF2B2D] to-[#009E49] hover:opacity-90 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-lg shadow-red-600/20 transition transform active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Passer une commande
+                    </a>
+                    <a href="https://wa.me/message/K2KDSMMFVVPGK1?src=qr" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+                        Nous écrire sur WhatsApp
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Domaines de Services (Mis à jour avec Récupération de colis) -->
+        <section class="space-y-4">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-boxes-packing text-[#FCD116] text-lg"></i>
+                <h3 class="text-lg font-bold text-white">Les domaines de nos services</h3>
+            </div>
+            <p class="text-xs text-slate-400">
+                Nos services sont portés sur tous vos besoins car notre but recherché est la satisfaction de nos clients.
+            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-emerald-500 hover:border-emerald-400 transition">
+                    <div class="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-lg mb-2">🥬</div>
+                    <h4 class="font-bold text-sm text-white">Produits de marché</h4>
+                    <p class="text-xs text-slate-400 mt-1">Condiments, vivres frais...</p>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-amber-400 hover:border-amber-300 transition">
+                    <div class="w-10 h-10 bg-amber-400/10 text-amber-400 rounded-xl flex items-center justify-center text-lg mb-2">🛒</div>
+                    <h4 class="font-bold text-sm text-white">Boutiques</h4>
+                    <p class="text-xs text-slate-400 mt-1">Alimentaire ou non.</p>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-red-500 hover:border-red-400 transition">
+                    <div class="w-10 h-10 bg-red-500/10 text-red-400 rounded-xl flex items-center justify-center text-lg mb-2">💻</div>
+                    <h4 class="font-bold text-sm text-white">Technologie</h4>
+                    <p class="text-xs text-slate-400 mt-1">Électronique & appareils...</p>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-sky-500 hover:border-sky-400 transition">
+                    <div class="w-10 h-10 bg-sky-500/10 text-sky-400 rounded-xl flex items-center justify-center text-lg mb-2">🔧</div>
+                    <h4 class="font-bold text-sm text-white">Mécanique & Pièces</h4>
+                    <p class="text-xs text-slate-400 mt-1">Pièces détachées...</p>
+                </div>
+
+                <!-- Nouveau domaine : Récupération de colis -->
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-purple-500 hover:border-purple-400 transition col-span-2 md:col-span-2">
+                    <div class="w-10 h-10 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-lg mb-2">📦</div>
+                    <h4 class="font-bold text-sm text-white">Récupération de colis & Course</h4>
+                    <p class="text-xs text-slate-400 mt-1">Vous achetez quelque part et nous partons récupérer et vous livrer le colis...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Les bases de nos services -->
+        <section class="glass-card p-6 rounded-2xl border border-amber-400/30 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800">
+            <div class="flex items-start space-x-4">
+                <div class="p-3 bg-amber-400/10 text-[#FCD116] rounded-2xl text-xl mt-1">
+                    <i class="fa-solid fa-handshake-angle"></i>
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-base font-bold text-white">Les bases de nos services</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Nos services sont basés sur la **confiance** et **l'écoute de nos clients** pour une compréhension parfaite. Appelez-nous ou écrivez-nous, dites ce que vous voulez ou quel colis récupérer et on s'en charge en toute rapidité et efficacité.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulaire de commande client -->
+        <section id="order-form" class="glass-card p-6 md:p-8 rounded-3xl space-y-6 border-t-2 border-[#009E49]">
+            <div class="border-b border-slate-800 pb-4">
+                <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane text-[#009E49]"></i>
+                    Commander ou Demander une Récupération
+                </h3>
+                <p class="text-xs text-slate-400 mt-1">Remplissez le formulaire, une notification détaillée nous sera immédiatement transmise sur WhatsApp.</p>
+            </div>
+
+            <form id="deliveryForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Votre Nom & Prénom *</label>
+                        <input type="text" id="clientName" required placeholder="Ex: Moussa Ouédraogo" class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Numéro Téléphone WhatsApp *</label>
+                        <input type="tel" id="clientPhone" required placeholder="Ex: 65619298" class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Type de service / Catégorie</label>
+                    <select id="serviceDomain" class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition">
+                        <option value="Récupération de colis / Course spéciale">📦 Récupération de colis (Déjà acheté ailleurs)</option>
+                        <option value="Produits de marché (condiments...)">🥬 Produits de marché (condiments...)</option>
+                        <option value="Produits de boutiques">🛒 Produits de boutiques (alimentaire ou non)</option>
+                        <option value="Produits de technologie">💻 Produits de technologie</option>
+                        <option value="Produits de mécanique">🔧 Produits de mécanique</option>
+                        <option value="Autre besoin">✨ Autre besoin</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Détails de l'achat ou du colis à récupérer *</label>
+                    <textarea id="orderDetails" rows="3" required placeholder="Ex: Récupérer un colis au nom de X chez la compagnie Y, ou acheter 2kg de tomates..." class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Adresse de livraison finale *</label>
+                    <input type="text" id="deliveryAddress" required placeholder="Ex: Ouagadougou, Secteur 15..." class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition">
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-[#009E49] to-emerald-600 hover:opacity-90 text-white font-extrabold py-3.5 rounded-xl shadow-lg shadow-emerald-600/25 transition active:scale-[0.99] flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Valider et M'envoyer la Commande sur WhatsApp</span>
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- MODAL SECRÈTE DE CONNEXION ADMINISTRATEUR -->
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-slate-700 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="font-extrabold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-[#FCD116]"></i> Accès Administrateur
+                </h3>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Mot de passe Administrateur</label>
+                <input type="password" id="adminPasswordInput" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 focus:border-[#EF2B2D] rounded-xl px-4 py-2.5 text-sm text-white outline-none">
+            </div>
+            <p id="loginError" class="text-xs text-red-400 hidden">Mot de passe incorrect.</p>
+            <button onclick="verifyAdminLogin()" class="w-full bg-gradient-to-r from-[#EF2B2D] to-red-600 hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-sm shadow-lg transition">
+                Connexion
+            </button>
+        </div>
+    </div>
+
+    <!-- TABLEAU DE BORD ADMINISTRATEUR -->
+    <div id="adminDashboard" class="fixed inset-0 bg-slate-950 z-50 hidden overflow-y-auto">
+        <header class="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-10">
+            <div class="max-w-5xl mx-auto flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg text-sm"><i class="fa-solid fa-chart-line"></i></span>
+                    <h2 class="font-extrabold text-white text-lg">Tableau de Bord - ESAL Fast Admin</h2>
+                </div>
+                <button onclick="logoutAdmin()" class="bg-red-500/10 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-red-500/20 transition">
+                    Déconnexion
+                </button>
+            </div>
+        </header>
+
+        <main class="max-w-5xl mx-auto p-4 space-y-6">
+            <!-- Statistiques -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-emerald-500">
+                    <p class="text-xs text-slate-400">Total Commandes</p>
+                    <p id="statTotal" class="text-2xl font-black text-white">0</p>
+                </div>
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-amber-400">
+                    <p class="text-xs text-slate-400">Commandes En attente</p>
+                    <p id="statPending" class="text-2xl font-black text-amber-400">0</p>
+                </div>
+                <div class="glass-card p-4 rounded-2xl border-l-4 border-sky-500">
+                    <p class="text-xs text-slate-400">WhatsApp Notification</p>
+                    <p class="text-base font-bold text-white">65619298</p>
+                </div>
+            </div>
+
+            <!-- Liste des commandes reçues -->
+            <div class="glass-card rounded-2xl p-4 md:p-6 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h3 class="font-bold text-white text-base">Historique des Commandes (Temps Réel)</h3>
+                    <button onclick="clearAllOrders()" class="text-xs text-red-400 hover:underline">Vider l'historique</button>
+                </div>
+
+                <div id="ordersList" class="space-y-3">
+                    <!-- Inséré dynamiquement en JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Pied de page -->
+    <footer class="mt-12 text-center text-slate-500 text-xs relative z-10 pb-6">
+        <p>© ESAL Fast - Service d'Achat et de Livraison Rapide</p>
+        <p class="mt-1 text-slate-600">De mon TECNO</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        const ADMIN_PASS = "12az@#--";
+        const WHATSAPP_NUMBER = "22665619298";
+
+        let orders = JSON.parse(localStorage.getItem('esal_orders') || '[]');
+
+        document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const domain = document.getElementById('serviceDomain').value;
+            const details = document.getElementById('orderDetails').value;
+            const address = document.getElementById('deliveryAddress').value;
+
+            const newOrder = {
+                id: Date.now(),
+                date: new Date().toLocaleString('fr-FR'),
+                name,
+                phone,
+                domain,
+                details,
+                address,
+                status: 'En attente'
+            };
+
+            orders.unshift(newOrder);
+            localStorage.setItem('esal_orders', JSON.stringify(orders));
+
+            const messageWhatsApp = `⚡ *NOUVELLE DEMANDE ESAL FAST* ⚡%0A%0A` +
+                `👤 *Nom du Client :* ${encodeURIComponent(name)}%0A` +
+                `📞 *Téléphone Client :* ${encodeURIComponent(phone)}%0A` +
+                `📦 *Type de Service :* ${encodeURIComponent(domain)}%0A` +
+                `🛒 *Détails / Colis :* ${encodeURIComponent(details)}%0A` +
+                `📍 *Adresse de livraison :* ${encodeURIComponent(address)}%0A%0A` +
+                `Merci de traiter ma demande rapidement !`;
+
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${messageWhatsApp}`, '_blank');
+
+            document.getElementById('deliveryForm').reset();
+            alert("Votre demande a été enregistrée ! Vous êtes maintenant redirigé vers WhatsApp pour nous transmettre la notification.");
+        });
+
+        function openAdminModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('adminPasswordInput').value = '';
+        }
+
+        function verifyAdminLogin() {
+            const inputPass = document.getElementById('adminPasswordInput').value;
+            if (inputPass === ADMIN_PASS) {
+                closeAdminModal();
+                showDashboard();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            renderAdminOrders();
+        }
+
+        function logoutAdmin() {
+            document.getElementById('adminDashboard').classList.add('hidden');
+        }
+
+        function renderAdminOrders() {
+            const container = document.getElementById('ordersList');
+            document.getElementById('statTotal').innerText = orders.length;
+            document.getElementById('statPending').innerText = orders.filter(o => o.status === 'En attente').length;
+
+            if (orders.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 py-4 text-center">Aucune commande enregistrée pour le moment.</p>`;
+                return;
+            }
+
+            container.innerHTML = orders.map(order => `
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-2 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-[#FCD116]">${order.name} (${order.phone})</span>
+                        <span class="text-[10px] text-slate-500">${order.date}</span>
+                    </div>
+                    <p class="text-slate-300"><strong>Service:</strong> ${order.domain}</p>
+                    <p class="text-slate-300"><strong>Détails:</strong> ${order.details}</p>
+                    <p class="text-slate-300"><strong>Adresse:</strong> ${order.address}</p>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${order.status === 'Livré' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${order.status}</span>
+                        <div class="space-x-2">
+                            <button onclick="toggleOrderStatus(${order.id})" class="text-sky-400 hover:underline">Changer Statut</button>
+                            <button onclick="deleteOrder(${order.id})" class="text-red-400 hover:underline">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleOrderStatus(id) {
+            orders = orders.map(o => {
+                if (o.id === id) {
+                    o.status = o.status === 'En attente' ? 'Livré' : 'En attente';
+                }
+                return o;
+            });
+            localStorage.setItem('esal_orders', JSON.stringify(orders));
+            renderAdminOrders();
+        }
+
+        function deleteOrder(id) {
+            orders = orders.filter(o => o.id !== id);
+            localStorage.setItem('esal_orders', JSON.stringify(orders));
+            renderAdminOrders();
+        }
+
+        function clearAllOrders() {
+            if (confirm("Voulez-vous vraiment effacer tout l'historique ?")) {
+                orders = [];
+                localStorage.setItem('esal_orders', JSON.stringify(orders));
+                renderAdminOrders();
+            }
+        }
+    </script>
+</body>
+</html>
