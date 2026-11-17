@@ -1,469 +1,2046 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESAL Fast - Service d'Achat et Livraison Rapide</title>
-    <!-- Tailwind CSS CDN -->
+    <title>ZLEV-SCC | Zone de Lecture, d'Écoute et de Visionnage Simple et Compréhensible</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-        :root {
-            --bf-red: #EF2B2D;
-            --bf-green: #009E49;
-            --bf-yellow: #FCD116;
-        }
-
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0b1321;
-            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
             overflow-x: hidden;
-            position: relative;
         }
-
-        /* Effets aux couleurs du Burkina Faso */
-        .bf-gradient-text {
-            background: linear-gradient(135deg, var(--bf-red) 0%, var(--bf-yellow) 50%, var(--bf-green) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Bandeau défilant fluide en entête */
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
-        
-        .bf-border-top {
-            border-top: 4px solid var(--bf-red);
-        }
-
-        .glass-card {
-            background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Animation d'arrière-plan : Achat & Livraison Express */
-        .delivery-bg-animation {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 110px;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.25;
-            overflow: hidden;
-        }
-
-        .delivery-runner {
-            position: absolute;
-            bottom: 15px;
+        .animate-marquee {
+            display: inline-block;
             white-space: nowrap;
-            animation: drive 12s linear infinite;
+            animation: marquee 24s linear infinite;
         }
-
-        @keyframes drive {
-            0% { transform: translateX(-300px); }
-            100% { transform: translateX(100vw); }
+        .animate-marquee:hover {
+            animation-play-state: paused;
         }
-
-        .road-line {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--bf-red), var(--bf-yellow), var(--bf-green));
+        /* Arrière-plan thématique étudiants sur téléphones + couleurs nationales du Burkina Faso */
+        .hero-bg {
+            background-image: linear-gradient(135deg, rgba(239, 43, 45, 0.92) 0%, rgba(15, 23, 42, 0.88) 50%, rgba(0, 158, 73, 0.92) 100%),
+                              url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .page-wallpaper {
+            background-image: linear-gradient(to bottom, rgba(248, 250, 252, 0.93), rgba(241, 245, 249, 0.96)),
+                              url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .bf-gradient-bar {
+            background: linear-gradient(90deg, #EF2B2D 0%, #EF2B2D 48%, #FCD116 50%, #009E49 52%, #009E49 100%);
+        }
+        /* Protection contre le partage externe des contenus */
+        .protected-content {
+            user-select: none;
+            -webkit-user-select: none;
         }
     </style>
 </head>
-<body class="min-h-screen pb-20 relative">
+<body class="min-h-screen flex flex-col text-slate-800 page-wallpaper">
 
-    <!-- Animation d'arrière-plan (Acheteur & Livreur en mouvement) -->
-    <div class="delivery-bg-animation">
-        <div class="delivery-runner flex items-center gap-6 text-2xl md:text-3xl font-bold">
-            <span class="text-amber-400">🛒 Achat / Colis</span>
-            <span>➔</span>
-            <span class="text-emerald-400">🛵💨📦 Livraison Express ESAL</span>
-            <span>➔</span>
-            <span class="text-sky-400">🏠 Client Satisfait</span>
+    <!-- Bandeau supérieur défilant obligatoire -->
+    <div class="bg-slate-950 text-[#FCD116] py-2 overflow-hidden border-b-2 border-[#EF2B2D] relative z-50 shadow-md">
+        <div class="animate-marquee font-extrabold text-xs sm:text-sm tracking-wider uppercase">
+            🇧🇫 Administrateur du site ZONGO ISMAEL, ETUDIANT À L'UNIVERSITÉ THOMAS SANKARA &nbsp;&nbsp;★&nbsp;&nbsp; Bienvenue sur ZLEV-SCC : Vos cours simples, compréhensibles et accessibles hors connexion ! &nbsp;&nbsp;★&nbsp;&nbsp; Administrateur du site ZONGO ISMAEL, ETUDIANT À L'UNIVERSITÉ THOMAS SANKARA 🇧🇫
         </div>
-        <div class="road-line"></div>
     </div>
 
-    <!-- Bandeau Devise Nationale du Burkina Faso -->
-    <div class="bg-gradient-to-r from-[#EF2B2D] via-[#FCD116] to-[#009E49] py-1.5 text-center text-slate-950 font-black text-xs tracking-widest uppercase shadow-md relative z-50">
-        🇧🇫 La patrie ou la mort, nous vaincrons 🇧🇫
-    </div>
+    <!-- Barre tricolore Burkina Faso -->
+    <div class="h-1.5 w-full bf-gradient-bar"></div>
 
-    <!-- En-tête / Navigation -->
-    <header class="sticky top-0 z-40 glass-card border-b border-slate-800">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="relative bg-slate-900 p-2 rounded-2xl border border-amber-400/40 shadow-lg">
-                    <span class="text-2xl">⚡</span>
-                    <span class="absolute -top-1 -right-1 text-xs text-[#FCD116]">★</span>
+    <!-- En-tête principal -->
+    <header class="hero-bg text-white shadow-xl relative z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <!-- Logo et Titre du site -->
+                <div id="brand-home-btn" class="flex items-start sm:items-center gap-3.5 cursor-pointer group">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FCD116] text-slate-950 flex flex-col items-center justify-center font-black shadow-lg shrink-0 border-2 border-white group-hover:scale-105 transition">
+                        <span class="text-sm sm:text-base leading-none">ZLEV</span>
+                        <span class="text-[10px] sm:text-xs leading-none text-[#EF2B2D] font-extrabold mt-0.5">SCC</span>
+                    </div>
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/45 border border-[#FCD116]/60 text-[#FCD116] text-[10px] sm:text-xs font-bold mb-1">
+                            <span>★</span> BURKINA FASO • ÉTUDES & RÉUSSITE SUR MOBILE
+                        </div>
+                        <h1 class="text-base sm:text-xl md:text-2xl font-extrabold leading-tight tracking-tight text-white drop-shadow">
+                            Zone de Lecture, d'Ecoute et de Visionnage Simple et Compréhensible pour vos Cours <span class="text-[#FCD116]">(ZLEV-SCC)</span>
+                        </h1>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="font-extrabold text-xl tracking-tight text-white flex items-center gap-1">
-                        ESAL <span class="text-[#FCD116]">Fast</span>
-                    </h1>
-                    <p class="text-[10px] text-slate-300 uppercase tracking-widest font-bold">Achat & Livraison Rapide</p>
-                </div>
-            </div>
 
-            <!-- Contacts WhatsApp & Bouton Masqué d'Admin -->
-            <div class="flex items-center space-x-2">
-                <a href="https://wa.me/message/K2KDSMMFVVPGK1?src=qr" target="_blank" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/40 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-                    <i class="fa-brands fa-whatsapp text-sm"></i>
-                    <span>65619298</span>
-                </a>
-
-                <!-- Accès Secret Administrateur -->
-                <button onclick="openAdminModal()" class="p-2 text-slate-500 hover:text-[#FCD116] transition" title="Connexion Administrateur">
-                    <i class="fa-solid fa-lock text-xs"></i>
-                </button>
+                <!-- Actions rapides en haut à droite -->
+                <div id="header-actions" class="flex flex-wrap items-center gap-2 sm:gap-3 justify-end"></div>
             </div>
         </div>
     </header>
 
-    <!-- Contenu Principal -->
-    <main class="max-w-4xl mx-auto px-4 pt-6 space-y-8 relative z-10">
-
-        <!-- Banner d'accueil aux couleurs nationales -->
-        <section class="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden bf-border-top shadow-2xl">
-            <div class="max-w-2xl space-y-4">
-                <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold">
-                    <span>★</span> Service Rapide & Fiable au Burkina Faso
-                </span>
-                <h2 class="text-2xl md:text-3xl font-extrabold leading-tight">
-                    Vos courses faites pour vous, <span class="bf-gradient-text">sans interrompre vos activités</span>.
-                </h2>
-                <p class="text-slate-300 text-sm md:text-base leading-relaxed">
-                    De nos jours, le temps manque souvent. Les courses, achats ou récupération de colis sont parfois faits en retard... Nous avons mis en place nos services pour vous aider en toute sécurité et confiance. Contacter nous, dites ce que vous voulez, nous le recuperons et vous apporterez à temps.vous payez une fois la livraison faite.
-                </p>
-                <div class="pt-2 flex flex-wrap gap-3">
-                    <a href="#order-form" class="bg-gradient-to-r from-[#EF2B2D] to-[#009E49] hover:opacity-90 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-lg shadow-red-600/20 transition transform active:scale-95 flex items-center gap-2">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        Passer une commande
-                    </a>
-                    <a href="https://wa.me/message/K2KDSMMFVVPGK1?src=qr" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-emerald-400"></i>
-                        Nous écrire sur WhatsApp
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Domaines de Services (Mis à jour avec Récupération de colis) -->
-        <section class="space-y-4">
-            <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-boxes-packing text-[#FCD116] text-lg"></i>
-                <h3 class="text-lg font-bold text-white">Les domaines de nos services</h3>
-            </div>
-            <p class="text-xs text-slate-400">
-                Nos services sont portés sur tous vos besoins car notre but recherché est la satisfaction de nos clients.
-            </p>
-
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-emerald-500 hover:border-emerald-400 transition">
-                    <div class="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-lg mb-2">🥬</div>
-                    <h4 class="font-bold text-sm text-white">Produits de marché</h4>
-                    <p class="text-xs text-slate-400 mt-1">Condiments, vivres frais...</p>
-                </div>
-
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-amber-400 hover:border-amber-300 transition">
-                    <div class="w-10 h-10 bg-amber-400/10 text-amber-400 rounded-xl flex items-center justify-center text-lg mb-2">🛒</div>
-                    <h4 class="font-bold text-sm text-white">Boutiques</h4>
-                    <p class="text-xs text-slate-400 mt-1">Alimentaire ou non.</p>
-                </div>
-
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-red-500 hover:border-red-400 transition">
-                    <div class="w-10 h-10 bg-red-500/10 text-red-400 rounded-xl flex items-center justify-center text-lg mb-2">💻</div>
-                    <h4 class="font-bold text-sm text-white">Technologie</h4>
-                    <p class="text-xs text-slate-400 mt-1">Électronique & appareils...</p>
-                </div>
-
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-sky-500 hover:border-sky-400 transition">
-                    <div class="w-10 h-10 bg-sky-500/10 text-sky-400 rounded-xl flex items-center justify-center text-lg mb-2">🔧</div>
-                    <h4 class="font-bold text-sm text-white">Mécanique & Pièces</h4>
-                    <p class="text-xs text-slate-400 mt-1">Pièces détachées...</p>
-                </div>
-
-                <!-- Nouveau domaine : Récupération de colis -->
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-purple-500 hover:border-purple-400 transition col-span-2 md:col-span-2">
-                    <div class="w-10 h-10 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center text-lg mb-2">📦</div>
-                    <h4 class="font-bold text-sm text-white">Récupération de colis & Course</h4>
-                    <p class="text-xs text-slate-400 mt-1">Vous achetez quelque part et nous partons récupérer et vous livrer le colis...</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Les bases de nos services -->
-        <section class="glass-card p-6 rounded-2xl border border-amber-400/30 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800">
-            <div class="flex items-start space-x-4">
-                <div class="p-3 bg-amber-400/10 text-[#FCD116] rounded-2xl text-xl mt-1">
-                    <i class="fa-solid fa-handshake-angle"></i>
-                </div>
-                <div class="space-y-2">
-                    <h3 class="text-base font-bold text-white">Les bases de nos services</h3>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        Nos services sont basés sur la **confiance** et **l'écoute de nos clients** pour une compréhension parfaite. Appelez-nous ou écrivez-nous, dites ce que vous voulez ou quel colis récupérer et on s'en charge en toute rapidité et efficacité.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Formulaire de commande client -->
-        <section id="order-form" class="glass-card p-6 md:p-8 rounded-3xl space-y-6 border-t-2 border-[#009E49]">
-            <div class="border-b border-slate-800 pb-4">
-                <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-paper-plane text-[#009E49]"></i>
-                    Commander ou Demander une Récupération
-                </h3>
-                <p class="text-xs text-slate-400 mt-1">Remplissez le formulaire, une notification détaillée nous sera immédiatement transmise sur WhatsApp.</p>
-            </div>
-
-            <form id="deliveryForm" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Votre Nom & Prénom *</label>
-                        <input type="text" id="clientName" required placeholder="Ex: Moussa Ouédraogo" class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Numéro Téléphone WhatsApp *</label>
-                        <input type="tel" id="clientPhone" required placeholder="Ex: 65619298" class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Type de service / Catégorie</label>
-                    <select id="serviceDomain" class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition">
-                        <option value="Récupération de colis / Course spéciale">📦 Récupération de colis (Déjà acheté ailleurs)</option>
-                        <option value="Produits de marché (condiments...)">🥬 Produits de marché (condiments...)</option>
-                        <option value="Produits de boutiques">🛒 Produits de boutiques (alimentaire ou non)</option>
-                        <option value="Produits de technologie">💻 Produits de technologie</option>
-                        <option value="Produits de mécanique">🔧 Produits de mécanique</option>
-                        <option value="Autre besoin">✨ Autre besoin</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Détails de l'achat ou du colis à récupérer *</label>
-                    <textarea id="orderDetails" rows="3" required placeholder="Ex: Récupérer un colis au nom de X chez la compagnie Y, ou acheter 2kg de tomates..." class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition"></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Adresse de livraison finale *</label>
-                    <input type="text" id="deliveryAddress" required placeholder="Ex: Ouagadougou, Secteur 15..." class="w-full bg-slate-900 border border-slate-700 focus:border-[#FCD116] rounded-xl px-4 py-2.5 text-sm text-white outline-none transition">
-                </div>
-
-                <button type="submit" class="w-full bg-gradient-to-r from-[#009E49] to-emerald-600 hover:opacity-90 text-white font-extrabold py-3.5 rounded-xl shadow-lg shadow-emerald-600/25 transition active:scale-[0.99] flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Valider et M'envoyer la Commande sur WhatsApp</span>
-                </button>
-            </form>
-        </section>
-
-    </main>
-
-    <!-- MODAL SECRÈTE DE CONNEXION ADMINISTRATEUR -->
-    <div id="loginModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-slate-700 space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-user-shield text-[#FCD116]"></i> Accès Administrateur
-                </h3>
-                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">Mot de passe Administrateur</label>
-                <input type="password" id="adminPasswordInput" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 focus:border-[#EF2B2D] rounded-xl px-4 py-2.5 text-sm text-white outline-none">
-            </div>
-            <p id="loginError" class="text-xs text-red-400 hidden">Mot de passe incorrect.</p>
-            <button onclick="verifyAdminLogin()" class="w-full bg-gradient-to-r from-[#EF2B2D] to-red-600 hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-sm shadow-lg transition">
-                Connexion
-            </button>
-        </div>
-    </div>
-
-    <!-- TABLEAU DE BORD ADMINISTRATEUR -->
-    <div id="adminDashboard" class="fixed inset-0 bg-slate-950 z-50 hidden overflow-y-auto">
-        <header class="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-10">
-            <div class="max-w-5xl mx-auto flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <span class="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg text-sm"><i class="fa-solid fa-chart-line"></i></span>
-                    <h2 class="font-extrabold text-white text-lg">Tableau de Bord - ESAL Fast Admin</h2>
-                </div>
-                <button onclick="logoutAdmin()" class="bg-red-500/10 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-red-500/20 transition">
-                    Déconnexion
-                </button>
-            </div>
-        </header>
-
-        <main class="max-w-5xl mx-auto p-4 space-y-6">
-            <!-- Statistiques -->
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-emerald-500">
-                    <p class="text-xs text-slate-400">Total Commandes</p>
-                    <p id="statTotal" class="text-2xl font-black text-white">0</p>
-                </div>
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-amber-400">
-                    <p class="text-xs text-slate-400">Commandes En attente</p>
-                    <p id="statPending" class="text-2xl font-black text-amber-400">0</p>
-                </div>
-                <div class="glass-card p-4 rounded-2xl border-l-4 border-sky-500">
-                    <p class="text-xs text-slate-400">WhatsApp Notification</p>
-                    <p class="text-base font-bold text-white">65619298</p>
-                </div>
-            </div>
-
-            <!-- Liste des commandes reçues -->
-            <div class="glass-card rounded-2xl p-4 md:p-6 space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <h3 class="font-bold text-white text-base">Historique des Commandes (Temps Réel)</h3>
-                    <button onclick="clearAllOrders()" class="text-xs text-red-400 hover:underline">Vider l'historique</button>
-                </div>
-
-                <div id="ordersList" class="space-y-3">
-                    <!-- Inséré dynamiquement en JS -->
-                </div>
-            </div>
-        </main>
-    </div>
+    <!-- Conteneur principal dynamique -->
+    <main id="app-root" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"></main>
 
     <!-- Pied de page -->
-    <footer class="mt-12 text-center text-slate-500 text-xs relative z-10 pb-6">
-        <p>© ESAL Fast - Service d'Achat et de Livraison Rapide</p>
-        <p class="mt-1 text-slate-600">De mon TECNO</p>
+    <footer class="bg-slate-900 text-slate-300 border-t-4 border-[#009E49] mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-3 h-3 rounded-full bg-[#EF2B2D]"></span>
+                <span class="inline-block w-3 h-3 rounded-full bg-[#FCD116]"></span>
+                <span class="inline-block w-3 h-3 rounded-full bg-[#009E49]"></span>
+                <span class="font-bold text-white">ZLEV-SCC</span> — Plateforme éducative sécurisée (En ligne & Hors-ligne).
+            </div>
+            <div class="text-slate-400 text-center sm:text-right">
+                Fondateur & Administrateur : <strong class="text-[#FCD116]">ZONGO ISMAEL</strong> • Université Thomas Sankara
+            </div>
+        </div>
     </footer>
 
-    <!-- JAVASCRIPT -->
+    <!-- Modale Globale -->
+    <div id="modal-container" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"></div>
+
+    <!-- Notifications Toast -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
     <script>
-        const ADMIN_PASS = "12az@#--";
-        const WHATSAPP_NUMBER = "22665619298";
+        /**
+         * ============================================================================
+         * ZLEV-SCC - ARCHITECTURE COMPLÈTE (LOCALSTORAGE + INDEXEDDB + VALIDATION)
+         * ============================================================================
+         */
+        const ADMIN_SECRET_CODE = '12az@#-+';
+        const ADMIN_EMAIL = 'admin@zlev-scc.bf';
 
-        let orders = JSON.parse(localStorage.getItem('esal_orders') || '[]');
+        const SUB_SECTIONS = [
+            {
+                id: 'resume',
+                title: 'RÉSUMÉS DU COURS',
+                icon: '📖',
+                color: 'border-[#EF2B2D]',
+                badgeBg: 'bg-red-50 text-[#EF2B2D]',
+                desc: 'Fiches synthétiques, points clés et résumés structurés pour réviser rapidement.'
+            },
+            {
+                id: 'video',
+                title: 'VIDEO EXPLICATIVE',
+                icon: '🎬',
+                color: 'border-[#FCD116]',
+                badgeBg: 'bg-amber-50 text-amber-800',
+                desc: 'Vidéos pédagogiques détaillées avec démonstrations pas à pas.'
+            },
+            {
+                id: 'audio',
+                title: 'AUDIO EXPLICATIVE TRÈS COMPRÉHENSIBLE',
+                icon: '🎧',
+                color: 'border-[#009E49]',
+                badgeBg: 'bg-emerald-50 text-[#009E49]',
+                desc: 'Explications vocales claires et accessibles à écouter partout sur votre téléphone.'
+            }
+        ];
 
-        document.getElementById('deliveryForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        const DEFAULT_CATEGORIES = [
+            {
+                id: 'terminale',
+                name: 'Terminale',
+                subtitle: 'Préparation au Baccalauréat (Séries A, C, D, G2...)',
+                icon: '🎓',
+                accent: 'border-[#EF2B2D]',
+                subjects: ['MATHÉMATIQUES', 'PHILOSOPHIE', 'PHYSIQUE-CHIMIE', 'SVT', 'HISTOIRE-GÉOGRAPHIE', 'FRANÇAIS', 'ANGLAIS', 'ÉCONOMIE']
+            },
+            {
+                id: 'seg',
+                name: 'Licence 1 en Sciences Économiques et Gestion (SEG)',
+                subtitle: 'Université Thomas Sankara • Toutes les matières fondamentales',
+                icon: '📊',
+                accent: 'border-[#009E49]',
+                subjects: [
+                    'DROIT',
+                    'PEC',
+                    'INITIATION À LA GESTION',
+                    'HFES',
+                    'STATISTIQUES',
+                    'MICROECONOMIE',
+                    'Maths',
+                    'COMPTABILITÉ',
+                    'MACRO-ECONOMIE',
+                    'COMPTABILITÉ G',
+                    'DEMOGRAPHIE',
+                    'PROBABILITÉS',
+                    'SOCIOLOGIE',
+                    'ANGLAIS',
+                    'E-LEARNING'
+                ]
+            },
+            {
+                id: 'mpci',
+                name: 'Licence 1 en MPCI',
+                subtitle: 'Mathématiques, Physique, Chimie et Informatique',
+                icon: '⚛️',
+                accent: 'border-[#FCD116]',
+                subjects: ['ALGÈBRE LINÉAIRE', 'ANALYSE MATHÉMATIQUE', 'MÉCANIQUE DU POINT', 'ÉLECTROCINÉTIQUE', 'CHIMIE GÉNÉRALE', 'ALGORITHMIQUE & PROGRAMMATION']
+            },
+            {
+                id: 'droit',
+                name: 'Licence 1 en DROIT',
+                subtitle: 'Sciences Juridiques et Politiques',
+                icon: '⚖️',
+                accent: 'border-slate-800',
+                subjects: ['INTRODUCTION AU DROIT', 'DROIT CONSTITUTIONNEL', 'DROIT CIVIL (PERSONNES & FAMILLE)', 'HISTOIRE DU DROIT', 'INSTITUTIONS INTERNATIONALES', 'ÉCONOMIE POLITIQUE']
+            }
+        ];
 
-            const name = document.getElementById('clientName').value;
-            const phone = document.getElementById('clientPhone').value;
-            const domain = document.getElementById('serviceDomain').value;
-            const details = document.getElementById('orderDetails').value;
-            const address = document.getElementById('deliveryAddress').value;
+        // Demandes d'inscription pré-remplies pour tester la validation immédiatement
+        const SAMPLE_PENDING_USERS = [
+            {
+                id: 'usr_demo_1',
+                email: 'ouedraogo.salif@uts.bf',
+                code: 'salif2026',
+                status: 'pending',
+                requestedAt: new Date(Date.now() - 3600000).toISOString()
+            },
+            {
+                id: 'usr_demo_2',
+                email: 'kabore.aminata@uts.bf',
+                code: 'amina123',
+                status: 'pending',
+                requestedAt: new Date(Date.now() - 1800000).toISOString()
+            }
+        ];
 
-            const newOrder = {
-                id: Date.now(),
-                date: new Date().toLocaleString('fr-FR'),
-                name,
-                phone,
-                domain,
-                details,
-                address,
-                status: 'En attente'
-            };
+        // Cours de démonstration pré-chargés en Licence 1 SEG
+        const DEFAULT_COURSES = [
+            {
+                id: 'crs_demo_micro_1',
+                categoryId: 'seg',
+                subject: 'MICROECONOMIE',
+                subSection: 'resume',
+                title: 'Chapitre 1 : Théorie du Consommateur et Utilité Marginale',
+                content: "1. DÉFINITION DE L'UTILITÉ :\nL'utilité mesure la satisfaction qu'un consommateur retire de la consommation d'un bien ou d'un service.\n\n2. UTILITÉ TOTALE (UT) ET UTILITÉ MARGINALE (Um) :\n- L'utilité totale augmente avec les quantités consommées jusqu'au point de satiété.\n- L'utilité marginale (Um = ΔUT / ΔQ) est décroissante : chaque unité supplémentaire procure une satisfaction moindre.\n\n3. ÉQUILIBRE DU CONSOMMATEUR :\nSous la contrainte budgétaire R = Px·X + Py·Y, le consommateur maximise sa satisfaction lorsque le rapport des utilités marginales est égal au rapport des prix : UmX / Px = UmY / Py.",
+                mediaUrl: '',
+                mediaDataUrl: '',
+                mediaMime: '',
+                mediaFileName: '',
+                createdAt: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                id: 'crs_demo_compta_1',
+                categoryId: 'seg',
+                subject: 'COMPTABILITÉ G',
+                subSection: 'resume',
+                title: 'Les Principes Fondamentaux du Bilan Comptable (SYSCOHADA)',
+                content: "Le bilan est une photographie du patrimoine de l'entreprise à une date donnée.\n\n- ACTIF (Emplois) : Ce que l'entreprise possède (Immobilisations, Stocks, Créances clients, Trésorerie-Actif).\n- PASSIF (Ressources) : L'origine des fonds (Capitaux propres, Dettes financières, Dettes fournisseurs, Trésorerie-Passif).\n\nRÈGLE D'OR : TOTAL ACTIF = TOTAL PASSIF.",
+                mediaUrl: '',
+                mediaDataUrl: '',
+                mediaMime: '',
+                mediaFileName: '',
+                createdAt: new Date(Date.now() - 43200000).toISOString()
+            },
+            {
+                id: 'crs_demo_stat_1',
+                categoryId: 'seg',
+                subject: 'STATISTIQUES',
+                subSection: 'audio',
+                title: 'Explication Audio : Moyenne, Médiane et Écart-type expliqués simplement',
+                content: "Écoutez ou lisez cette synthèse vocale détaillée pour maîtriser le calcul des paramètres de tendance centrale et de dispersion en Licence 1 SEG sans difficulté.",
+                mediaUrl: '',
+                mediaDataUrl: '',
+                mediaMime: '',
+                mediaFileName: '',
+                createdAt: new Date(Date.now() - 21600000).toISOString()
+            }
+        ];
 
-            orders.unshift(newOrder);
-            localStorage.setItem('esal_orders', JSON.stringify(orders));
+        // ============================================================================
+        // BASE DE DONNÉES INDEXEDDB POUR COURS, FICHIERS LOURDS & ESPACE HORS-LIGNE
+        // ============================================================================
+        const MediaDB = {
+            DB_NAME: 'ZLEV_SCC_PERSISTENT_DB',
+            STORE_COURSES: 'courses',
+            STORE_LOCKER: 'offline_locker',
+            db: null,
 
-            const messageWhatsApp = `⚡ *NOUVELLE DEMANDE ESAL FAST* ⚡%0A%0A` +
-                `👤 *Nom du Client :* ${encodeURIComponent(name)}%0A` +
-                `📞 *Téléphone Client :* ${encodeURIComponent(phone)}%0A` +
-                `📦 *Type de Service :* ${encodeURIComponent(domain)}%0A` +
-                `🛒 *Détails / Colis :* ${encodeURIComponent(details)}%0A` +
-                `📍 *Adresse de livraison :* ${encodeURIComponent(address)}%0A%0A` +
-                `Merci de traiter ma demande rapidement !`;
+            async init() {
+                if (this.db) return this.db;
+                return new Promise((resolve, reject) => {
+                    const req = indexedDB.open(this.DB_NAME, 1);
+                    req.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains(this.STORE_COURSES)) {
+                            db.createObjectStore(this.STORE_COURSES, { keyPath: 'id' });
+                        }
+                        if (!db.objectStoreNames.contains(this.STORE_LOCKER)) {
+                            db.createObjectStore(this.STORE_LOCKER, { keyPath: 'lockerKey' });
+                        }
+                    };
+                    req.onsuccess = (e) => {
+                        this.db = e.target.result;
+                        resolve(this.db);
+                    };
+                    req.onerror = (e) => reject(e.target.error);
+                });
+            },
 
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${messageWhatsApp}`, '_blank');
+            async getAllCourses() {
+                const db = await this.init();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(this.STORE_COURSES, 'readonly');
+                    const store = tx.objectStore(this.STORE_COURSES);
+                    const req = store.getAll();
+                    req.onsuccess = () => {
+                        const list = req.result || [];
+                        list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                        resolve(list);
+                    };
+                    req.onerror = () => reject(req.error);
+                });
+            },
 
-            document.getElementById('deliveryForm').reset();
-            alert("Votre demande a été enregistrée ! Vous êtes maintenant redirigé vers WhatsApp pour nous transmettre la notification.");
-        });
+            async saveCourse(courseObj) {
+                const db = await this.init();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(this.STORE_COURSES, 'readwrite');
+                    const store = tx.objectStore(this.STORE_COURSES);
+                    const req = store.put(courseObj);
+                    req.onsuccess = () => resolve(courseObj);
+                    req.onerror = () => reject(req.error);
+                });
+            },
 
-        function openAdminModal() {
-            document.getElementById('loginModal').classList.remove('hidden');
+            async deleteCourse(courseId) {
+                const db = await this.init();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(this.STORE_COURSES, 'readwrite');
+                    const store = tx.objectStore(this.STORE_COURSES);
+                    const req = store.delete(courseId);
+                    req.onsuccess = () => resolve(true);
+                    req.onerror = () => reject(req.error);
+                });
+            },
+
+            async getUserLocker(email) {
+                const db = await this.init();
+                const prefix = email.toLowerCase() + '::';
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(this.STORE_LOCKER, 'readonly');
+                    const store = tx.objectStore(this.STORE_LOCKER);
+                    const req = store.getAll();
+                    req.onsuccess = () => {
+                        const all = req.result || [];
+                        resolve(all.filter(item => item.lockerKey.startsWith(prefix)));
+                    };
+                    req.onerror = () => reject(req.error);
+                });
+            },
+
+            async saveToUserLocker(email, course) {
+                const db = await this.init();
+                const lockerKey = email.toLowerCase() + '::' + course.id;
+                const existing = await this.getUserLocker(email);
+                if (existing.some(i => i.id === course.id)) return false;
+
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(this.STORE_LOCKER, 'readwrite');
+                    const store = tx.objectStore(this.STORE_LOCKER);
+                    const req = store.put({
+                        ...course,
+                        lockerKey,
+                        savedOfflineAt: new Date().toISOString()
+                    });
+                    req.onsuccess = () => resolve(true);
+                    req.onerror = () => reject(req.error);
+                });
+            },
+
+            async removeFromUserLocker(email, courseId) {
+                const db = await this.init();
+                const lockerKey = email.toLowerCase() + '::' + courseId;
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(this.STORE_LOCKER, 'readwrite');
+                    const store = tx.objectStore(this.STORE_LOCKER);
+                    const req = store.delete(lockerKey);
+                    req.onsuccess = () => resolve(true);
+                    req.onerror = () => reject(req.error);
+                });
+            }
+        };
+
+        // ============================================================================
+        // GESTIONNAIRE DE STOCKAGE & RECONNAISSANCE INTERNE (LOCALSTORAGE + INDEXEDDB)
+        // ============================================================================
+        const Store = {
+            KEYS: {
+                USERS: 'zlev_scc_users_registry_v3',
+                CURRENT_USER: 'zlev_scc_active_session_v3',
+                CATEGORIES: 'zlev_scc_categories_v3',
+                FEEDBACKS: 'zlev_scc_feedbacks_v3',
+                ANALYTICS: 'zlev_scc_analytics_v3',
+                SEEDED: 'zlev_scc_seeded_v3'
+            },
+
+            async init() {
+                if (!localStorage.getItem(this.KEYS.USERS)) {
+                    localStorage.setItem(this.KEYS.USERS, JSON.stringify(SAMPLE_PENDING_USERS));
+                }
+                if (!localStorage.getItem(this.KEYS.CATEGORIES)) {
+                    localStorage.setItem(this.KEYS.CATEGORIES, JSON.stringify(DEFAULT_CATEGORIES));
+                }
+                if (!localStorage.getItem(this.KEYS.FEEDBACKS)) {
+                    localStorage.setItem(this.KEYS.FEEDBACKS, JSON.stringify([]));
+                }
+                if (!localStorage.getItem(this.KEYS.ANALYTICS)) {
+                    localStorage.setItem(this.KEYS.ANALYTICS, JSON.stringify({
+                        totalVisits: 1,
+                        categoryVisits: { terminale: 2, seg: 5, mpci: 1, droit: 1 }
+                    }));
+                } else {
+                    const analytics = this.getAnalytics();
+                    analytics.totalVisits = (analytics.totalVisits || 0) + 1;
+                    localStorage.setItem(this.KEYS.ANALYTICS, JSON.stringify(analytics));
+                }
+
+                await MediaDB.init();
+                if (!localStorage.getItem(this.KEYS.SEEDED)) {
+                    for (const course of DEFAULT_COURSES) {
+                        await MediaDB.saveCourse(course);
+                    }
+                    localStorage.setItem(this.KEYS.SEEDED, '1');
+                }
+            },
+
+            // --- UTILISATEURS & VALIDATION ---
+            getAllUsers() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.KEYS.USERS)) || [];
+                } catch (e) {
+                    return [];
+                }
+            },
+
+            saveAllUsers(users) {
+                localStorage.setItem(this.KEYS.USERS, JSON.stringify(users));
+            },
+
+            getPendingUsers() {
+                return this.getAllUsers().filter(u => u.status === 'pending');
+            },
+
+            getApprovedUsers() {
+                return this.getAllUsers().filter(u => u.status === 'approved');
+            },
+
+            registerUser(email, code) {
+                const cleanEmail = email.trim().toLowerCase();
+                const cleanCode = code.trim();
+                const users = this.getAllUsers();
+
+                const existingIndex = users.findIndex(u => u.email.toLowerCase() === cleanEmail);
+                if (existingIndex !== -1) {
+                    if (users[existingIndex].status === 'approved') {
+                        return {
+                            ok: false,
+                            message: "Cet email est déjà validé dans notre système ! Utilisez l'onglet 'Connexion' avec votre code."
+                        };
+                    }
+                    // Mettre à jour la demande en attente existante
+                    users[existingIndex].code = cleanCode;
+                    users[existingIndex].requestedAt = new Date().toISOString();
+                    this.saveAllUsers(users);
+                    return {
+                        ok: true,
+                        message: "Votre demande d'accès a été mise à jour et transmise à l'administrateur ZONGO ISMAEL."
+                    };
+                }
+
+                const newUser = {
+                    id: 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+                    email: cleanEmail,
+                    code: cleanCode,
+                    status: 'pending',
+                    requestedAt: new Date().toISOString()
+                };
+                users.unshift(newUser);
+                this.saveAllUsers(users);
+                return {
+                    ok: true,
+                    message: "Demande envoyée ! Tant que l'administrateur n'a pas validé votre demande, l'accès reste bloqué."
+                };
+            },
+
+            approveUser(userId) {
+                const users = this.getAllUsers();
+                const idx = users.findIndex(u => u.id === userId);
+                if (idx === -1) return false;
+                users[idx].status = 'approved';
+                users[idx].approvedAt = new Date().toISOString();
+                this.saveAllUsers(users);
+                return true;
+            },
+              deleteUser(userId) {
+                const users = this.getAllUsers();
+                const target = users.find(u => u.id === userId);
+                const updated = users.filter(u => u.id !== userId);
+                this.saveAllUsers(updated);
+
+                // Si l'utilisateur supprimé était connecté, déconnecter immédiatement
+                const current = this.getCurrentUser();
+                if (current && target && !current.isAdmin && current.email.toLowerCase() === target.email.toLowerCase()) {
+                    this.logout();
+                }
+                return true;
+            },
+
+            loginStudent(email, code) {
+                const cleanEmail = email.trim().toLowerCase();
+                const cleanCode = code.trim();
+
+                // Permettre aussi la connexion Admin directe si l'admin utilise le formulaire principal
+                if ((cleanEmail === ADMIN_EMAIL || cleanEmail === 'admin') && cleanCode === ADMIN_SECRET_CODE) {
+                    const adminSession = { email: ADMIN_EMAIL, isAdmin: true, status: 'approved' };
+                    this.setCurrentUser(adminSession);
+                    return { ok: true, user: adminSession };
+                }
+
+                const users = this.getAllUsers();
+                const found = users.find(u => u.email.toLowerCase() === cleanEmail);
+
+                if (!found) {
+                    return {
+                        ok: false,
+                        message: "Accès rejeté : Email non reconnu (ou compte supprimé par l'administrateur). Veuillez faire une nouvelle demande."
+                    };
+                }
+
+                if (found.status !== 'approved') {
+                    return {
+                        ok: false,
+                        message: "Accès en attente : L'administrateur n'a pas encore validé votre demande d'entrée."
+                    };
+                }
+
+                if (found.code !== cleanCode) {
+                    return {
+                        ok: false,
+                        message: "Code d'entrée incorrect pour cette adresse email."
+                    };
+                }
+
+                const session = {
+                    id: found.id,
+                    email: found.email,
+                    isAdmin: false,
+                    status: 'approved',
+                    loggedInAt: new Date().toISOString()
+                };
+                this.setCurrentUser(session);
+                return { ok: true, user: session };
+            },
+
+            getCurrentUser() {
+                try {
+                    const session = JSON.parse(localStorage.getItem(this.KEYS.CURRENT_USER));
+                    if (!session) return null;
+                    if (session.isAdmin) return session;
+
+                    // Vérification continue dans le registre interne
+                    const users = this.getAllUsers();
+                    const stillApproved = users.find(
+                        u => u.email.toLowerCase() === session.email.toLowerCase() && u.status === 'approved'
+                    );
+                    if (!stillApproved) {
+                        localStorage.removeItem(this.KEYS.CURRENT_USER);
+                        return null;
+                    }
+                    return session;
+                } catch (e) {
+                    return null;
+                }
+            },
+
+            setCurrentUser(userObj) {
+                localStorage.setItem(this.KEYS.CURRENT_USER, JSON.stringify(userObj));
+            },
+
+            logout() {
+                localStorage.removeItem(this.KEYS.CURRENT_USER);
+            },
+
+            // --- CATÉGORIES & MATIÈRES ---
+            getCategories() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.KEYS.CATEGORIES)) || DEFAULT_CATEGORIES;
+                } catch (e) {
+                    return DEFAULT_CATEGORIES;
+                }
+            },
+
+            saveCategories(cats) {
+                localStorage.setItem(this.KEYS.CATEGORIES, JSON.stringify(cats));
+            },
+              addSubjectToCategory(categoryId, subjectName) {
+                const cats = this.getCategories();
+                const cat = cats.find(c => c.id === categoryId);
+                if (!cat) return false;
+                const clean = subjectName.trim().toUpperCase();
+                if (!clean) return false;
+                if (!cat.subjects.some(s => s.toUpperCase() === clean)) {
+                    cat.subjects.push(clean);
+                    this.saveCategories(cats);
+                }
+                return true;
+            },
+
+            // --- COURS (INDEXEDDB) ---
+            async getCourses() {
+                return await MediaDB.getAllCourses();
+            },
+
+            async addCourse(courseObj) {
+                const newCourse = {
+                    id: 'crs_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+                    ...courseObj,
+                    createdAt: new Date().toISOString()
+                };
+                await MediaDB.saveCourse(newCourse);
+                return newCourse;
+            },
+
+            async deleteCourse(courseId) {
+                await MediaDB.deleteCourse(courseId);
+            },
+
+            // --- NOTES & CRITIQUES ---
+            getFeedbacks() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.KEYS.FEEDBACKS)) || [];
+                } catch (e) {
+                    return [];
+                }
+            },
+
+            addFeedback(fb) {
+                const list = this.getFeedbacks();
+                list.unshift({
+                    id: 'fb_' + Date.now() + '_' + Math.random().toString(36).substring(2, 5),
+                    ...fb,
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem(this.KEYS.FEEDBACKS, JSON.stringify(list));
+            },
+
+            deleteFeedback(fbId) {
+                const updated = this.getFeedbacks().filter(f => f.id !== fbId);
+                localStorage.setItem(this.KEYS.FEEDBACKS, JSON.stringify(updated));
+            },
+
+            // --- ANALYTIQUE ---
+            getAnalytics() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.KEYS.ANALYTICS)) || { totalVisits: 1, categoryVisits: {} };
+                } catch (e) {
+                    return { totalVisits: 1, categoryVisits: {} };
+                }
+            },
+
+            recordCategoryVisit(catId) {
+                const a = this.getAnalytics();
+                if (!a.categoryVisits) a.categoryVisits = {};
+                a.categoryVisits[catId] = (a.categoryVisits[catId] || 0) + 1;
+                localStorage.setItem(this.KEYS.ANALYTICS, JSON.stringify(a));
+            },
+
+            // --- ESPACE PERSONNEL HORS-LIGNE ---
+            async getUserLocker(email) {
+                return await MediaDB.getUserLocker(email);
+            },
+
+            async saveToUserLocker(email, course) {
+                return await MediaDB.saveToUserLocker(email, course);
+            },
+
+            async removeFromUserLocker(email, courseId) {
+                return await MediaDB.removeFromUserLocker(email, courseId);
+            }
+        };
+
+        // ============================================================================
+        // UTILITAIRES INTERFACE & ROUTEUR
+        // ============================================================================
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
         }
 
-        function closeAdminModal() {
-            document.getElementById('loginModal').classList.add('hidden');
-            document.getElementById('loginError').classList.add('hidden');
-            document.getElementById('adminPasswordInput').value = '';
-        }
-
-        function verifyAdminLogin() {
-            const inputPass = document.getElementById('adminPasswordInput').value;
-            if (inputPass === ADMIN_PASS) {
-                closeAdminModal();
-                showDashboard();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
+        function formatDate(isoStr) {
+            if (!isoStr) return '';
+            try {
+                return new Date(isoStr).toLocaleString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return '';
             }
         }
 
-        function showDashboard() {
-            document.getElementById('adminDashboard').classList.remove('hidden');
-            renderAdminOrders();
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgMap = {
+                success: 'bg-[#009E49] text-white border-white/30',
+                error: 'bg-[#EF2B2D] text-white border-white/30',
+                warning: 'bg-slate-900 text-[#FCD116] border-[#FCD116]'
+            };
+            toast.className = `${bgMap[type] || bgMap.success} pointer-events-auto px-4 py-3.5 rounded-2xl shadow-2xl border text-xs sm:text-sm font-bold flex items-center gap-2.5 transition-all duration-300 transform translate-y-2 opacity-0`;
+            toast.innerHTML = `<span>${type === 'error' ? '⚠️' : type === 'warning' ? '🔔' : '✅'}</span><span>${escapeHtml(message)}</span>`;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+       function openModal(htmlContent) {
+            const modal = document.getElementById('modal-container');
+            modal.innerHTML = htmlContent;
+            modal.classList.remove('hidden');
         }
 
-        function logoutAdmin() {
-            document.getElementById('adminDashboard').classList.add('hidden');
+        function closeModal() {
+            const modal = document.getElementById('modal-container');
+            modal.classList.add('hidden');
+            modal.innerHTML = '';
         }
 
-        function renderAdminOrders() {
-            const container = document.getElementById('ordersList');
-            document.getElementById('statTotal').innerText = orders.length;
-            document.getElementById('statPending').innerText = orders.filter(o => o.status === 'En attente').length;
+        const router = {
+            state: {
+                view: 'home',
+                categoryId: null,
+                subjectName: null,
+                subSectionId: null,
+                adminTab: 'stats'
+            },
 
-            if (orders.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 py-4 text-center">Aucune commande enregistrée pour le moment.</p>`;
+            async goHome() {
+                this.state = { ...this.state, view: 'home', categoryId: null, subjectName: null, subSectionId: null };
+                await renderApp();
+            },
+
+            async openCategory(categoryId) {
+                Store.recordCategoryVisit(categoryId);
+                this.state = { ...this.state, view: 'category', categoryId, subjectName: null, subSectionId: null };
+                await renderApp();
+            },
+
+            async openSubject(categoryId, subjectName) {
+                this.state = { ...this.state, view: 'subject', categoryId, subjectName, subSectionId: null };
+                await renderApp();
+            },
+
+            async openSubSection(categoryId, subjectName, subSectionId) {
+                this.state = { ...this.state, view: 'subsection', categoryId, subjectName, subSectionId };
+                await renderApp();
+            },
+
+            async openLocker() {
+                this.state = { ...this.state, view: 'locker' };
+                await renderApp();
+            },
+
+            async openAdmin(tab = null) {
+                this.state = {
+                    ...this.state,
+                    view: 'admin',
+                    adminTab: tab || this.state.adminTab || 'stats'
+                };
+                await renderApp();
+            }
+        };
+
+        // ============================================================================
+        // RENDU DE L'EN-TÊTE & NAVIGATION
+        // ============================================================================
+        async function renderHeaderActions() {
+            const container = document.getElementById('header-actions');
+            const user = Store.getCurrentUser();
+
+            if (!user) {
+                container.innerHTML = `
+                    <button id="btn-open-admin-modal" type="button"
+                        class="bg-[#FCD116] hover:bg-yellow-300 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center gap-2 border-2 border-white cursor-pointer">
+                        <span>🔐</span> Accès Administrateur
+                    </button>
+                `;
+                document.getElementById('btn-open-admin-modal').addEventListener('click', openAdminLoginModal);
                 return;
             }
 
-            container.innerHTML = orders.map(order => `
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-2 text-xs">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-[#FCD116]">${order.name} (${order.phone})</span>
-                        <span class="text-[10px] text-slate-500">${order.date}</span>
+            if (user.isAdmin) {
+                const pendingCount = Store.getPendingUsers().length;
+                const fbCount = Store.getFeedbacks().length;
+                container.innerHTML = `
+                    <button id="hdr-home-btn" type="button" class="bg-white/15 hover:bg-white/25 text-white font-semibold px-3.5 py-2 rounded-xl text-xs sm:text-sm transition cursor-pointer">
+                        🏠 Voir les Cours
+                    </button>
+                    <button id="hdr-admin-btn" type="button" class="bg-[#FCD116] hover:bg-yellow-300 text-slate-950 font-extrabold px-4 py-2 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center gap-2 cursor-pointer">
+                        <span>📊</span> Tableau de Bord Admin
+                        ${pendingCount > 0 ? `<span class="bg-[#EF2B2D] text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse" title="Demandes en attente">${pendingCount}</span>` : ''}
+                        ${fbCount > 0 ? `<span class="bg-slate-900 text-[#FCD116] text-[10px] font-black px-2 py-0.5 rounded-full" title="Avis étudiants">${fbCount}</span>` : ''}
+                    </button>
+                    <button id="hdr-logout-btn" type="button" class="bg-[#EF2B2D] hover:bg-red-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs sm:text-sm transition shadow cursor-pointer">
+                        Déconnexion
+                    </button>
+                `;
+                document.getElementById('hdr-home-btn').addEventListener('click', () => router.goHome());
+                document.getElementById('hdr-admin-btn').addEventListener('click', () => router.openAdmin());
+                document.getElementById('hdr-logout-btn').addEventListener('click', handleLogout);
+            } else {
+                const lockerItems = await Store.getUserLocker(user.email);
+                container.innerHTML = `
+                    <div class="bg-black/40 border border-white/20 px-3 py-1.5 rounded-xl text-xs text-slate-100 hidden sm:block">
+                        Étudiant : <strong class="text-[#FCD116]">${escapeHtml(user.email)}</strong>
                     </div>
-                    <p class="text-slate-300"><strong>Service:</strong> ${order.domain}</p>
-                    <p class="text-slate-300"><strong>Détails:</strong> ${order.details}</p>
-                    <p class="text-slate-300"><strong>Adresse:</strong> ${order.address}</p>
-                    <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${order.status === 'Livré' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${order.status}</span>
-                        <div class="space-x-2">
-                            <button onclick="toggleOrderStatus(${order.id})" class="text-sky-400 hover:underline">Changer Statut</button>
-                            <button onclick="deleteOrder(${order.id})" class="text-red-400 hover:underline">Supprimer</button>
+                    <button id="hdr-cats-btn" type="button" class="bg-white/15 hover:bg-white/25 text-white font-semibold px-3.5 py-2 rounded-xl text-xs sm:text-sm transition cursor-pointer">
+                        📚 Catégories
+                    </button>
+                    <button id="hdr-locker-btn" type="button" class="bg-[#009E49] hover:bg-emerald-600 text-white font-bold px-3.5 py-2 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center gap-1.5 border border-white/30 cursor-pointer">
+                        <span>📥</span> Mon Espace Hors-Ligne <span class="bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-full">${lockerItems.length}</span>
+                    </button>
+                    <button id="hdr-logout-btn" type="button" class="bg-[#EF2B2D] hover:bg-red-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs sm:text-sm transition shadow cursor-pointer">
+                        Quitter
+                    </button>
+                `;
+                document.getElementById('hdr-cats-btn').addEventListener('click', () => router.goHome());
+                document.getElementById('hdr-locker-btn').addEventListener('click', () => router.openLocker());
+                document.getElementById('hdr-logout-btn').addEventListener('click', handleLogout);
+            }
+        }
+
+        async function handleLogout() {
+            Store.logout();
+            showToast("Vous avez été déconnecté.", "warning");
+            await router.goHome();
+        }
+
+        // ============================================================================
+        // RENDU PRINCIPAL
+        // ============================================================================
+        async function renderApp() {
+            await renderHeaderActions();
+            const root = document.getElementById('app-root');
+            const user = Store.getCurrentUser();
+
+            if (!user) {
+                renderAuthGate(root);
+                return;
+            }
+            
+            switch (router.state.view) {
+                case 'admin':
+                    if (user.isAdmin) await renderAdminDashboard(root);
+                    else await renderCategoriesHome(root);
+                    break;
+                case 'category':
+                    await renderCategorySubjects(root, router.state.categoryId);
+                    break;
+                case 'subject':
+                    await renderSubjectSubSections(root, router.state.categoryId, router.state.subjectName);
+                    break;
+                case 'subsection':
+                    await renderSubSectionContent(root, router.state.categoryId, router.state.subjectName, router.state.subSectionId);
+                    break;
+                case 'locker':
+                    await renderOfflineLocker(root, user);
+                    break;
+                default:
+                    await renderCategoriesHome(root);
+                    break;
+            }
+        }
+
+        // ============================================================================
+        // 1. PORTAIL D'ACCÈS & SERVEUR DE VALIDATION (CONNEXION / INSCRIPTION)
+        // ============================================================================
+        function renderAuthGate(root) {
+            root.innerHTML = `
+                <div class="max-w-xl mx-auto my-4 sm:my-8">
+                    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+                        <div class="h-2 bf-gradient-bar"></div>
+                        <div class="p-6 sm:p-8">
+                            <div class="text-center mb-6">
+                                <span class="inline-block px-3 py-1 rounded-full bg-emerald-50 text-[#009E49] font-extrabold text-xs mb-2">
+                                    🔒 SERVEUR DE VALIDATION SÉCURISÉ ZLEV-SCC
+                                </span>
+                                <h2 class="text-xl sm:text-2xl font-black text-slate-900">Portail d'Entrée des Étudiants</h2>
+                                <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                                    Inscrivez votre adresse email et créez votre code personnel. L'accès est ouvert dès la validation par l'administrateur <strong>ZONGO ISMAEL</strong>.
+                                </p>
+                            </div>
+
+                            <!-- Onglets Connexion / Demande d'accès -->
+                            <div class="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-2xl mb-6">
+                                <button id="tab-login-btn" type="button"
+                                    class="py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm bg-white text-slate-900 shadow transition cursor-pointer">
+                                    🔑 Déjà validé ? Connexion
+                                </button>
+                                <button id="tab-register-btn" type="button"
+                                    class="py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                                    📝 Demander l'accès
+                                </button>
+                            </div>
+
+                            <!-- Formulaire Connexion -->
+                            <form id="student-login-form" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Adresse Email</label>
+                                    <input type="text" id="login-email" required placeholder="exemple@etudiant.bf"
+                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#009E49] focus:border-[#009E49] outline-none text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Votre Code d'entrée personnel</label>
+                                    <div class="relative">
+                                        <input type="password" id="login-code" required placeholder="Entrez votre code secret"
+                                            class="w-full px-4 py-3 pr-12 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#009E49] focus:border-[#009E49] outline-none text-sm">
+                                        <button type="button" data-toggle-pwd="login-code"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 text-base px-1.5 cursor-pointer" title="Afficher/Masquer">
+                                            👁️
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="submit"
+                                    class="w-full bg-[#009E49] hover:bg-emerald-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition text-sm cursor-pointer">
+                                    Se connecter à mes cours →
+                                </button>
+                            </form>
+
+                            <!-- Formulaire Inscription (Demande de validation) -->
+                            <form id="student-register-form" class="space-y-4 hidden">
+                                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-xs text-amber-900">
+                                    <strong>Comment ça marche ?</strong> Saisissez votre email et créez votre code personnel. Votre demande sera transmise au tableau de bord de l'administrateur pour validation. Une fois validé, le site mémorisera votre email et votre code automatiquement.
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Votre Adresse Email</label>
+                                    <input type="email" id="reg-email" required placeholder="votre.nom@gmail.com"
+                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#EF2B2D] focus:border-[#EF2B2D] outline-none text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Créez votre Code d'entrée personnel</label>
+                                    <div class="relative">
+                                        <input type="password" id="reg-code" required minlength="4" placeholder="Choisissez un code facile à retenir"
+                                            class="w-full px-4 py-3 pr-12 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#EF2B2D] focus:border-[#EF2B2D] outline-none text-sm">
+                                        <button type="button" data-toggle-pwd="reg-code"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 text-base px-1.5 cursor-pointer" title="Afficher/Masquer">
+                                            👁️
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="submit"
+                                    class="w-full bg-[#EF2B2D] hover:bg-red-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition text-sm cursor-pointer">
+                                    Envoyer ma demande de validation 📩
+                                </button>
+                            </form>
+
+                            <div id="auth-feedback-box" class="hidden mt-4 p-4 rounded-2xl text-xs sm:text-sm font-semibold"></div>
                         </div>
                     </div>
                 </div>
-            `).join('');
-        }
+            `;
 
-        function toggleOrderStatus(id) {
-            orders = orders.map(o => {
-                if (o.id === id) {
-                    o.status = o.status === 'En attente' ? 'Livré' : 'En attente';
-                }
-                return o;
+            // Gestion des onglets Connexion / Inscription
+            const tabLoginBtn = document.getElementById('tab-login-btn');
+            const tabRegBtn = document.getElementById('tab-register-btn');
+            const loginForm = document.getElementById('student-login-form');
+            const regForm = document.getElementById('student-register-form');
+            const feedbackBox = document.getElementById('auth-feedback-box');
+
+            tabLoginBtn.addEventListener('click', () => {
+                feedbackBox.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                tabLoginBtn.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm bg-white text-slate-900 shadow transition cursor-pointer';
+                tabRegBtn.className = 'py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition cursor-pointer';
             });
-            localStorage.setItem('esal_orders', JSON.stringify(orders));
-            renderAdminOrders();
+               tabRegBtn.addEventListener('click', () => {
+                feedbackBox.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                tabRegBtn.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm bg-white text-slate-900 shadow transition cursor-pointer';
+                tabLoginBtn.className = 'py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition cursor-pointer';
+            });
+
+            // Boutons afficher/masquer mot de passe
+            root.querySelectorAll('[data-toggle-pwd]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const input = document.getElementById(btn.getAttribute('data-toggle-pwd'));
+                    if (input) {
+                        input.type = input.type === 'password' ? 'text' : 'password';
+                    }
+                });
+            });
+
+            // Soumission Connexion
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const code = document.getElementById('login-code').value;
+                const res = Store.loginStudent(email, code);
+
+                if (res.ok) {
+                    showToast(res.user.isAdmin ? "Bienvenue Administrateur ZONGO ISMAEL !" : "Connexion réussie ! Bienvenue sur ZLEV-SCC.");
+                    if (res.user.isAdmin) await router.openAdmin('stats');
+                    else await router.goHome();
+                } else {
+                    feedbackBox.className = 'mt-4 p-4 rounded-2xl text-xs sm:text-sm font-semibold bg-red-50 text-[#EF2B2D] border border-red-200';
+                    feedbackBox.textContent = res.message;
+                    feedbackBox.classList.remove('hidden');
+                }
+            });
+
+            // Soumission Inscription
+            regForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('reg-email').value;
+                const code = document.getElementById('reg-code').value;
+                const res = Store.registerUser(email, code);
+
+                if (res.ok) {
+                    regForm.reset();
+                    feedbackBox.className = 'mt-4 p-4 rounded-2xl text-xs sm:text-sm font-semibold bg-emerald-50 text-[#009E49] border border-emerald-200';
+                    feedbackBox.textContent = res.message;
+                    feedbackBox.classList.remove('hidden');
+                    showToast("Demande envoyée à l'administrateur !");
+                } else {
+                    feedbackBox.className = 'mt-4 p-4 rounded-2xl text-xs sm:text-sm font-semibold bg-amber-50 text-amber-900 border border-amber-200';
+                    feedbackBox.textContent = res.message;
+                    feedbackBox.classList.remove('hidden');
+                }
+            });
         }
 
-        function deleteOrder(id) {
-            orders = orders.filter(o => o.id !== id);
-            localStorage.setItem('esal_orders', JSON.stringify(orders));
-            renderAdminOrders();
+        // ============================================================================
+        // 2. MODALE DE CONNEXION ADMINISTRATEUR (CODE EXACT : 12az@#-+ )
+        // ============================================================================
+        function openAdminLoginModal() {
+            openModal(`
+                <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-t-8 border-[#FCD116] relative">
+                    <button id="close-admin-modal-btn" type="button"
+                        class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer">
+                        ✕
+                    </button>
+                    <div class="text-center mb-5">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-900 text-[#FCD116] flex items-center justify-center text-2xl mx-auto mb-3 shadow">
+                            🛡️
+                        </div>
+                        <h3 class="text-xl font-black text-slate-900">Espace Administrateur</h3>
+                        <p class="text-xs text-slate-500 mt-1">Réservé exclusivement à <strong>ZONGO ISMAEL</strong></p>
+                    </div>
+                    <form id="admin-modal-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Code d'entrée Administrateur</label>
+                            <div class="relative">
+                                <input type="password" id="admin-password-input" required placeholder="Entrez le code administrateur"
+                                    class="w-full px-4 py-3 pr-12 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FCD116] outline-none text-sm font-mono">
+                                <button type="button" id="toggle-admin-pwd-btn"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900 text-base px-1.5 cursor-pointer" title="Afficher/Masquer">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-slate-900 hover:bg-slate-800 text-[#FCD116] font-extrabold py-3.5 rounded-xl shadow-lg transition text-sm cursor-pointer">
+                            Ouvrir le Tableau de Bord →
+                        </button>
+                    </form>
+                </div>
+            `);
+
+            const pwdInput = document.getElementById('admin-password-input');
+            pwdInput.focus();
+
+            document.getElementById('close-admin-modal-btn').addEventListener('click', closeModal);
+            document.getElementById('toggle-admin-pwd-btn').addEventListener('click', () => {
+                pwdInput.type = pwdInput.type === 'password' ? 'text' : 'password';
+            });
+
+            document.getElementById('admin-modal-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const val = pwdInput.value.trim();
+                if (val === ADMIN_SECRET_CODE) {
+                    Store.setCurrentUser({ email: ADMIN_EMAIL, isAdmin: true, status: 'approved' });
+                    closeModal();
+                    showToast("Bienvenue Administrateur ZONGO ISMAEL !");
+                    await router.openAdmin('stats');
+                } else {
+                    showToast("Code d'entrée administrateur incorrect !", "error");
+                }
+            });
         }
 
-        function clearAllOrders() {
-            if (confirm("Voulez-vous vraiment effacer tout l'historique ?")) {
-                orders = [];
-                localStorage.setItem('esal_orders', JSON.stringify(orders));
-                renderAdminOrders();
+        // ============================================================================
+        // 3. NIVEAU 1 : CATÉGORIES DE CLASSES
+        // ============================================================================
+        async function renderCategoriesHome(root) {
+            const categories = Store.getCategories();
+            const allCourses = await Store.getCourses();
+
+            root.innerHTML = `
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white/90 backdrop-blur p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <div>
+                        <span class="text-xs font-extrabold uppercase tracking-wider text-[#009E49]">NIVEAU 1 • CHOIX DE LA FILIÈRE / CLASSE</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">Sélectionnez votre Catégorie d'Études</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">Appuyez sur votre classe ou filière pour accéder à l'ensemble des matières et supports de cours.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    ${categories.map(cat => {
+                        const courseCount = allCourses.filter(c => c.categoryId === cat.id).length;
+                        return `
+                            <div data-cat-id="${escapeHtml(cat.id)}"
+                                class="category-card bg-white rounded-3xl p-6 sm:p-7 shadow-md hover:shadow-xl transition-all cursor-pointer border-l-8 ${cat.accent} group flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div class="w-14 h-14 rounded-2xl bg-slate-100 group-hover:bg-[#FCD116]/30 flex items-center justify-center text-3xl transition">
+                                            ${cat.icon}
+                                        </div>
+                                        <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-bold text-xs">
+                                            ${cat.subjects.length} Matières • ${courseCount} Cours
+                                        </span>
+                                    </div>
+                                    <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-4 group-hover:text-[#009E49] transition">
+                                        ${escapeHtml(cat.name)}
+                                    </h3>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-1.5">${escapeHtml(cat.subtitle)}</p>
+                                </div>
+                                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs sm:text-sm font-extrabold text-[#EF2B2D]">
+                                    <span>Ouvrir les matières</span>
+                                    <span class="group-hover:translate-x-1.5 transition-transform">→</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            root.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    router.openCategory(card.getAttribute('data-cat-id'));
+                });
+            });
+        }
+
+        // ============================================================================
+        // 4. NIVEAU 2 : MATIÈRES D'UNE CATÉGORIE
+        // ============================================================================
+        async function renderCategorySubjects(root, categoryId) {
+            const category = Store.getCategories().find(c => c.id === categoryId);
+            if (!category) return router.goHome();
+            const allCourses = await Store.getCourses();
+            const catCourses = allCourses.filter(c => c.categoryId === categoryId);
+
+            root.innerHTML = `
+                <div class="mb-6 bg-white/90 backdrop-blur p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <button id="back-to-cats-btn" type="button"
+                        class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-[#EF2B2D] bg-slate-100 px-4 py-2 rounded-xl shadow-sm mb-4 transition cursor-pointer">
+                        ← Retour aux Catégories
+                    </button>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-[#009E49]">NIVEAU 2 • MATIÈRES DISPONIBLES</span>
+                            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">${escapeHtml(category.name)}</h2>
+                            <p class="text-xs sm:text-sm text-slate-600 mt-1">Appuyez sur une matière pour ouvrir ses 3 sous-ensembles (Résumés, Vidéo explicative, Audio explicative).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    ${category.subjects.map((subj, idx) => {
+                        const count = catCourses.filter(c => c.subject === subj).length;
+                        return `
+                            <div data-subject="${escapeHtml(subj)}"
+                                class="subject-card bg-white rounded-2xl p-5 shadow-sm hover:shadow-lg border border-slate-200 hover:border-[#009E49] transition cursor-pointer flex items-center justify-between gap-3 group">
+                                <div class="flex items-center gap-3.5 min-w-0">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-900 text-[#FCD116] font-black text-xs flex items-center justify-center shrink-0">
+                                        ${idx + 1}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h3 class="font-extrabold text-sm sm:text-base text-slate-900 group-hover:text-[#009E49] truncate">
+                                            ${escapeHtml(subj)}
+                                        </h3>
+                                        <span class="text-xs text-slate-500">${count} support(s) publié(s)</span>
+                                    </div>
+                                </div>
+                                <span class="text-slate-400 group-hover:text-[#009E49] font-bold">→</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            document.getElementById('back-to-cats-btn').addEventListener('click', () => router.goHome());
+            root.querySelectorAll('.subject-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    router.openSubject(categoryId, card.getAttribute('data-subject'));
+                });
+            });
+        }
+
+        // ============================================================================
+        // 5. NIVEAU 3 : LES 3 SOUS-ENSEMBLES D'UNE MATIÈRE
+        // ============================================================================
+        async function renderSubjectSubSections(root, categoryId, subjectName) {
+            const category = Store.getCategories().find(c => c.id === categoryId);
+            if (!category) return router.goHome();
+            const allCourses = await Store.getCourses();
+            const subjCourses = allCourses.filter(c => c.categoryId === categoryId && c.subject === subjectName);
+
+            root.innerHTML = `
+                <div class="mb-6 bg-white/90 backdrop-blur p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <button id="back-to-subjects-btn" type="button"
+                        class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-[#EF2B2D] bg-slate-100 px-4 py-2 rounded-xl shadow-sm mb-4 transition cursor-pointer">
+                        ← Retour aux matières (${escapeHtml(category.name)})
+                    </button>
+                    <span class="block text-xs font-extrabold uppercase tracking-wider text-[#009E49]">NIVEAU 3 • CHOIX DU FORMAT PÉDAGOGIQUE</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">${escapeHtml(subjectName)}</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Choisissez le format d'apprentissage adapté à vos besoins :</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    ${SUB_SECTIONS.map(sub => {
+                        const count = subjCourses.filter(c => c.subSection === sub.id).length;
+                        return `
+                            <div data-subsec-id="${sub.id}"
+                                class="subsec-card bg-white rounded-3xl p-6 shadow-md hover:shadow-xl transition cursor-pointer border-t-8 ${sub.color} flex flex-col justify-between group">
+                                <div>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <span class="text-4xl">${sub.icon}</span>
+                                        <span class="px-3 py-1 rounded-full text-xs font-extrabold ${sub.badgeBg}">
+                                            ${count} contenu(s)
+                                        </span>
+                                    </div>
+                                    <h3 class="text-lg font-black text-slate-900 group-hover:text-[#009E49] transition">
+                                        ${sub.title}
+                                    </h3>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">${sub.desc}</p>
+                                </div>
+                                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-extrabold text-slate-900">
+                                    <span>Accéder au contenu</span>
+                                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            document.getElementById('back-to-subjects-btn').addEventListener('click', () => router.openCategory(categoryId));
+            root.querySelectorAll('.subsec-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    router.openSubSection(categoryId, subjectName, card.getAttribute('data-subsec-id'));
+                });
+            });
+        }
+
+        // ============================================================================
+        // 6. NIVEAU 4 : CONTENU + TÉLÉCHARGEMENT INTERNE + ESPACE DE NOTE/CRITIQUE
+        // ============================================================================
+        async function renderSubSectionContent(root, categoryId, subjectName, subSectionId) {
+            const category = Store.getCategories().find(c => c.id === categoryId);
+            const subObj = SUB_SECTIONS.find(s => s.id === subSectionId);
+            if (!category || !subObj) return router.goHome();
+
+            const user = Store.getCurrentUser();
+            const allCourses = await Store.getCourses();
+            const courses = allCourses.filter(
+                c => c.categoryId === categoryId && c.subject === subjectName && c.subSection === subSectionId
+            );
+            const lockerItems = user && !user.isAdmin ? await Store.getUserLocker(user.email) : [];
+            const lockerIds = lockerItems.map(i => i.id);
+
+            root.innerHTML = `
+                <div class="mb-6 bg-white/90 backdrop-blur p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <button id="back-to-subsecs-btn" type="button"
+                        class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-[#EF2B2D] bg-slate-100 px-4 py-2 rounded-xl shadow-sm mb-4 transition cursor-pointer">
+                        ← Retour à ${escapeHtml(subjectName)}
+                    </button>
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">${subObj.icon}</span>
+                        <div>
+                            <div class="text-xs font-extrabold uppercase text-[#009E49]">${escapeHtml(category.name)} • ${escapeHtml(subjectName)}</div>
+                            <h2 class="text-xl sm:text-2xl font-black text-slate-900">${subObj.title}</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste des cours publiés dans ce sous-ensemble -->
+                <div class="space-y-6 mb-10">
+                    ${courses.length === 0 ? `
+                        <div class="bg-white rounded-3xl p-8 text-center border border-slate-200 shadow-sm">
+                            <div class="text-4xl mb-3">📭</div>
+                            <h3 class="text-lg font-extrabold text-slate-800">Aucun contenu publié ici pour l'instant</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto">
+                                L'administrateur <strong>ZONGO ISMAEL</strong> n'a pas encore ajouté de cours dans cette rubrique. Revenez bientôt ou laissez une suggestion ci-dessous !
+                            </p>
+                        </div>
+                    ` : courses.map(course => {
+                        const isSaved = lockerIds.includes(course.id);
+                        return `
+                            <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-md border border-slate-200 protected-content" oncontextmenu="return false;">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                                    <div>
+                                        <span class="inline-block px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${subObj.badgeBg} mb-1">
+                                            ${subObj.title}
+                                        </span>
+                                        <h3 class="text-lg sm:text-xl font-black text-slate-900">${escapeHtml(course.title)}</h3>
+                                    </div>
+                                    ${user && !user.isAdmin ? `
+                                        <button type="button" data-download-id="${escapeHtml(course.id)}"
+                                            class="download-locker-btn ${isSaved ? 'bg-slate-800 text-[#FCD116]' : 'bg-[#009E49] hover:bg-emerald-700 text-white'} font-extrabold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-2 shrink-0 self-start sm:self-center cursor-pointer">
+                                            <span>${isSaved ? '✅ Enregistré Hors-Ligne' : '📥 Télécharger dans mon Espace Hors-Ligne'}</span>
+                                        </button>
+                                    ` : ''}
+                                </div>
+
+                                ${(course.mediaDataUrl || course.mediaUrl) ? renderMediaPlayer(course) : ''}
+
+                                <div class="mt-4 text-sm sm:text-base text-slate-700 whitespace-pre-line leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                    ${escapeHtml(course.content)}
+                                </div>
+                                <p class="text-[11px] text-slate-400 mt-3 flex items-center gap-1.5">
+                                    <span>🔒</span> Téléchargement interne protégé : stocké dans votre espace personnel sur le site (non partageable à l'extérieur) et utilisable sans connexion internet.
+                                </p>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <!-- Lieu de Note / Critique envoyé directement au Tableau de Bord Administrateur -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border-t-4 border-[#FCD116]">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="text-2xl">✍️</span>
+                        <div>
+                            <h3 class="text-lg font-black text-slate-900">Votre Note ou Critique sur « ${subObj.title} »</h3>
+                            <p class="text-xs sm:text-sm text-slate-600">
+                                Donnez votre appréciation ou signalez un point à améliorer. Votre message est transmis directement au tableau de bord de l'administrateur <strong>ZONGO ISMAEL</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form id="subsection-feedback-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Votre Appréciation / Note</label>
+                            <select id="fb-rating" class="w-full sm:w-72 px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold bg-slate-50">
+                                <option value="5">⭐⭐⭐⭐⭐ (5/5) Très compréhensible !</option>
+                                <option value="4">⭐⭐⭐⭐ (4/5) Bien expliqué</option>
+                                <option value="3">⭐⭐⭐ (3/5) Moyen, à compléter</option>
+                                <option value="2">⭐⭐ (2/5) Difficile à comprendre</option>
+                                <option value="1">⭐ (1/5) Besoin de corrections</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Votre Message / Critique / Suggestion</label>
+                            <textarea id="fb-comment" rows="3" required placeholder="Écrivez votre commentaire ou ce que l'administrateur peut améliorer..."
+                                class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#009E49] outline-none text-sm"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="bg-slate-900 hover:bg-slate-800 text-[#FCD116] font-extrabold px-6 py-3 rounded-xl text-xs sm:text-sm shadow transition cursor-pointer">
+                            Envoyer directement à l'Administrateur 📨
+                        </button>
+                    </form>
+                </div>
+            `;
+
+            document.getElementById('back-to-subsecs-btn').addEventListener('click', () => {
+                router.openSubject(categoryId, subjectName);
+            });
+
+            root.querySelectorAll('.download-locker-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const courseId = btn.getAttribute('data-download-id');
+                    const course = allCourses.find(c => c.id === courseId);
+                    if (!course || !user || user.isAdmin) return;
+                    const added = await Store.saveToUserLocker(user.email, course);
+                    if (added) {
+                        showToast("Cours téléchargé dans votre Espace Hors-Ligne ! Accessible sans internet.");
+                    } else {
+                        showToast("Ce cours est déjà enregistré dans votre espace hors-ligne.", "warning");
+                    }
+                    await renderApp();
+                });
+            });
+
+            document.getElementById('subsection-feedback-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const rating = parseInt(document.getElementById('fb-rating').value, 10) || 5;
+                const comment = document.getElementById('fb-comment').value.trim();
+                if (!comment) return;
+
+                Store.addFeedback({
+                    categoryId,
+                    categoryName: category.name,
+                    subjectName,
+                    subSectionId,
+                    rating,
+                    comment,
+                    userEmail: user ? user.email : 'Étudiant'
+                });
+
+                document.getElementById('fb-comment').value = '';
+                showToast("Merci ! Votre note a été envoyée directement au tableau de bord de l'administrateur.");
+            });
+        }
+
+        function renderMediaPlayer(course) {
+            const src = (course.mediaDataUrl || course.mediaUrl || '').trim();
+            if (!src) return '';
+
+            if (course.mediaMime && course.mediaMime.includes('pdf')) {
+                return `
+                    <div class="mt-4 rounded-2xl overflow-hidden border border-slate-200 bg-slate-100">
+                        <div class="bg-slate-900 text-white px-4 py-2 text-xs font-bold flex items-center justify-between">
+                            <span>📄 Document PDF : ${escapeHtml(course.mediaFileName || course.title)}</span>
+                            <span class="text-[#FCD116]">Lecture intégrée protégée</span>
+                        </div>
+                        <iframe src="${src}#toolbar=0" class="w-full h-96" frameborder="0"></iframe>
+                    </div>
+                `;
             }
+
+            if (course.subSection === 'video' || (course.mediaMime && course.mediaMime.startsWith('video/'))) {
+                const ytMatch = src.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?]+)/);
+                if (ytMatch) {
+                    return `
+                        <div class="mt-4 aspect-video rounded-2xl overflow-hidden bg-black shadow-inner">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytMatch[1]}?rel=0" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    `;
+                }
+                return `
+                    <div class="mt-4 rounded-2xl overflow-hidden bg-black">
+                        <video controls controlsList="nodownload" oncontextmenu="return false;" class="w-full max-h-96" src="${escapeHtml(src)}">
+                            Votre navigateur ne supporte pas la lecture vidéo.
+                        </video>
+                    </div>
+                `;
+            }
+
+            if (course.subSection === 'audio' || (course.mediaMime && course.mediaMime.startsWith('audio/'))) {
+                return `
+                    <div class="mt-4 bg-slate-900 text-white p-4 rounded-2xl flex flex-col sm:flex-row items-center gap-3">
+                        <span class="text-2xl">🎧</span>
+                        <div class="w-full">
+                            ${course.mediaFileName ? `<div class="text-xs text-[#FCD116] font-bold mb-1">${escapeHtml(course.mediaFileName)}</div>` : ''}
+                            <audio controls controlsList="nodownload" oncontextmenu="return false;" class="w-full" src="${escapeHtml(src)}">
+                                Votre navigateur ne supporte pas la lecture audio.
+                            </audio>
+                        </div>
+                    </div>
+                `;
+            }
+            return '';
         }
+ // ============================================================================
+        // 7. ESPACE PERSONNEL HORS-LIGNE DE L'ÉTUDIANT
+        // ============================================================================
+        async function renderOfflineLocker(root, user) {
+            const savedCourses = await Store.getUserLocker(user.email);
+
+            root.innerHTML = `
+                <div class="mb-6 bg-white/90 backdrop-blur p-5 rounded-3xl shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-extrabold uppercase text-[#009E49]">🔒 STOCKAGE INTERNE PERSONNEL & HORS-CONNEXION</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">Mon Espace Hors-Ligne</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                            Tous les cours téléchargés ici restent stockés dans votre compte sur le site (non partageables) et accessibles même sans connexion internet.
+                        </p>
+                    </div>
+                    <button id="locker-back-btn" type="button"
+                        class="bg-slate-900 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm self-start cursor-pointer">
+                        ← Retour aux cours
+                    </button>
+                </div>
+
+                ${savedCourses.length === 0 ? `
+                    <div class="bg-white rounded-3xl p-10 text-center border border-slate-200 shadow-sm">
+                        <div class="text-5xl mb-3">📥</div>
+                        <h3 class="text-lg font-black text-slate-900">Votre espace hors-ligne est vide</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto">
+                            Ouvrez une matière et appuyez sur « Télécharger dans mon Espace Hors-Ligne » pour sauvegarder vos résumés, audios et vidéos.
+                        </p>
+                    </div>
+                ` : `
+                    <div class="space-y-5">
+                        ${savedCourses.map(c => {
+                            const subObj = SUB_SECTIONS.find(s => s.id === c.subSection) || { title: c.subSection, icon: '📄' };
+                            return `
+                                <div class="bg-white rounded-3xl p-6 shadow-md border-l-8 border-[#009E49] protected-content" oncontextmenu="return false;">
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                                        <div>
+                                            <span class="text-xs font-extrabold text-[#009E49] uppercase">${escapeHtml(c.subject)} • ${subObj.icon} ${subObj.title}</span>
+                                            <h3 class="text-lg font-black text-slate-900 mt-0.5">${escapeHtml(c.title)}</h3>
+                                        </div>
+                                        <button type="button" data-remove-locker="${escapeHtml(c.id)}"
+                                            class="remove-locker-btn bg-red-50 hover:bg-[#EF2B2D] text-[#EF2B2D] hover:text-white font-bold px-3.5 py-2 rounded-xl text-xs transition self-start cursor-pointer">
+                                            Retirer de l'espace
+                                        </button>
+                                    </div>
+                                    ${(c.mediaDataUrl || c.mediaUrl) ? renderMediaPlayer(c) : ''}
+                                    <div class="mt-3 text-sm text-slate-700 whitespace-pre-line bg-slate-50 p-4 rounded-2xl">
+                                        ${escapeHtml(c.content)}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `}
+            `;
+
+            document.getElementById('locker-back-btn').addEventListener('click', () => router.goHome());
+            root.querySelectorAll('.remove-locker-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = btn.getAttribute('data-remove-locker');
+                    await Store.removeFromUserLocker(user.email, id);
+                    showToast("Cours retiré de votre espace hors-ligne.", "warning");
+                    await renderApp();
+                });
+            });
+        }
+
+        // ============================================================================
+        // 8. TABLEAU DE BORD ADMINISTRATEUR (ONGLETS RÉACTIFS & 100% FONCTIONNELS)
+        // ============================================================================
+        async function renderAdminDashboard(root) {
+            const pendingUsers = Store.getPendingUsers();
+            const approvedUsers = Store.getApprovedUsers();
+            const analytics = Store.getAnalytics();
+            const categories = Store.getCategories();
+            const courses = await Store.getCourses();
+            const feedbacks = Store.getFeedbacks();
+            const activeTab = router.state.adminTab || 'stats';
+
+            // Calcul des visites par catégorie
+            let maxCatVisits = 1;
+            let topCatName = 'Aucune visite';
+            let topCatCount = -1;
+            categories.forEach(cat => {
+                const v = (analytics.categoryVisits && analytics.categoryVisits[cat.id]) || 0;
+                if (v > maxCatVisits) maxCatVisits = v;
+                if (v > topCatCount) {
+                    topCatCount = v;
+                    topCatName = cat.name;
+                }
+            });
+
+            const defaultCat = categories.find(c => c.id === 'seg') || categories[0];
+
+            root.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Bannière Admin -->
+                    <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-7 shadow-xl border-b-4 border-[#FCD116] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-[#FCD116]">Administration Centrale ZLEV-SCC</span>
+                            <h2 class="text-2xl sm:text-3xl font-black mt-1">Tableau de Bord — ZONGO ISMAEL</h2>
+                            <p class="text-xs sm:text-sm text-slate-300 mt-1">Gérez les validations d'accès, publiez vos cours et consultez les critiques des étudiants.</p>
+                        </div>
+                        <button id="admin-preview-site-btn" type="button"
+                            class="bg-white/15 hover:bg-white/25 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm self-start sm:self-center cursor-pointer">
+                            Voir le site étudiant →
+                        </button>
+                    </div>
+
+                    <!-- Navigation par Onglets Clairs -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 bg-white p-2 rounded-2xl shadow-sm border border-slate-200">
+                        <button type="button" data-admin-tab="stats"
+                            class="admin-tab-btn py-3 px-3 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer ${activeTab === 'stats' ? 'bg-slate-900 text-[#FCD116] shadow' : 'text-slate-600 hover:bg-slate-100'}">
+                            <span>📊</span> Bilan & Statistiques
+                        </button>
+                        <button type="button" data-admin-tab="users"
+                            class="admin-tab-btn py-3 px-3 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer ${activeTab === 'users' ? 'bg-slate-900 text-[#FCD116] shadow' : 'text-slate-600 hover:bg-slate-100'}">
+                            <span>👥</span> Demandes & Membres
+                            ${pendingUsers.length > 0 ? `<span class="bg-[#EF2B2D] text-white text-[10px] font-black px-2 py-0.5 rounded-full">${pendingUsers.length}</span>` : ''}
+                        </button>
+                        <button type="button" data-admin-tab="courses"
+                            class="admin-tab-btn py-3 px-3 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer ${activeTab === 'courses' ? 'bg-slate-900 text-[#FCD116] shadow' : 'text-slate-600 hover:bg-slate-100'}">
+                            <span>📚</span> Ajouter / Gérer Cours
+                        </button>
+                        <button type="button" data-admin-tab="feedbacks"
+                            class="admin-tab-btn py-3 px-3 rounded-xl font-extrabold text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer ${activeTab === 'feedbacks' ? 'bg-slate-900 text-[#FCD116] shadow' : 'text-slate-600 hover:bg-slate-100'}">
+                            <span>💬</span> Notes & Critiques
+                            ${feedbacks.length > 0 ? `<span class="bg-[#009E49] text-white text-[10px] font-black px-2 py-0.5 rounded-full">${feedbacks.length}</span>` : ''}
+                        </button>
+                    </div>
+
+                    <!-- ONGLET 1 : BILAN & STATISTIQUES -->
+                    <div id="tab-panel-stats" class="${activeTab === 'stats' ? 'space-y-6' : 'hidden'}">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-white rounded-2xl p-5 shadow-sm border-l-4 border-[#009E49]">
+                                <div class="text-xs font-bold text-slate-500 uppercase">Nombre total de visites</div>
+                                <div class="text-3xl font-black text-slate-900 mt-1">${analytics.totalVisits || 1}</div>
+                                <div class="text-[11px] text-[#009E49] font-semibold mt-1">Visiteurs enregistrés</div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-5 shadow-sm border-l-4 border-[#FCD116]">
+                                <div class="text-xs font-bold text-slate-500 uppercase">Catégorie la plus visitée</div>
+                                <div class="text-sm sm:text-base font-black text-slate-900 mt-1 line-clamp-2">${escapeHtml(topCatName)}</div>
+                                <div class="text-[11px] text-amber-600 font-semibold mt-1">${Math.max(0, topCatCount)} consultation(s)</div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-5 shadow-sm border-l-4 border-[#EF2B2D]">
+                                <div class="text-xs font-bold text-slate-500 uppercase">Demandes en attente</div>
+                                <div class="text-3xl font-black text-[#EF2B2D] mt-1">${pendingUsers.length}</div>
+                                <button type="button" data-jump-tab="users" class="text-[11px] text-[#EF2B2D] underline font-bold mt-1 cursor-pointer">
+                                    Gérer les validations →
+                                </button>
+                            </div>
+                            <div class="bg-white rounded-2xl p-5 shadow-sm border-l-4 border-slate-800">
+                                <div class="text-xs font-bold text-slate-500 uppercase">Étudiants validés / Cours</div>
+                                <div class="text-3xl font-black text-slate-900 mt-1">${approvedUsers.length} <span class="text-sm font-bold text-slate-400">/ ${courses.length}</span></div>
+                                <div class="text-[11px] text-slate-500 font-semibold mt-1">Base de reconnaissance active</div>
+                            </div>
+                        </div>
+
+                        <!-- Graphique en barres des visites par catégorie -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-200">
+                            <h3 class="text-lg font-black text-slate-900 mb-4">📈 Fréquentation par Catégorie (Classes & Filières)</h3>
+                            <div class="space-y-4">
+                                ${categories.map(cat => {
+                                    const v = (analytics.categoryVisits && analytics.categoryVisits[cat.id]) || 0;
+                                    const pct = Math.min(100, Math.round((v / maxCatVisits) * 100));
+                                    return `
+                                        <div>
+                                            <div class="flex justify-between text-xs sm:text-sm font-bold mb-1">
+                                                <span>${cat.icon} ${escapeHtml(cat.name)}</span>
+                                                <span class="text-[#009E49]">${v} visite(s)</span>
+                                            </div>
+                                            <div class="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden">
+                                                <div class="h-full bg-gradient-to-r from-[#EF2B2D] via-[#FCD116] to-[#009E49] rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ONGLET 2 : VALIDATION DES DEMANDES & GESTION DES MEMBRES -->
+                    <div id="tab-panel-users" class="${activeTab === 'users' ? 'grid grid-cols-1 lg:grid-cols-2 gap-6' : 'hidden'}">
+                        <!-- Demandes en attente -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-[#FCD116]">
+                            <h3 class="text-lg font-black text-slate-900 flex items-center gap-2 mb-4">
+                                <span>⏳</span> Demandes d'entrée en attente (${pendingUsers.length})
+                            </h3>
+                            ${pendingUsers.length === 0 ? `
+                                <div class="bg-slate-50 rounded-2xl p-6 text-center text-xs sm:text-sm text-slate-500">
+                                    Aucune demande d'entrée en attente actuellement.
+                                </div>
+                            ` : `
+                                <div class="space-y-3">
+                                    ${pendingUsers.map(u => `
+                                        <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                            <div class="min-w-0">
+                                                <div class="font-extrabold text-sm text-slate-900 break-all">${escapeHtml(u.email)}</div>
+                                                <div class="text-xs text-slate-600 mt-0.5">
+                                                    Code créé : <span class="font-mono font-bold bg-white px-2 py-0.5 rounded border border-slate-200">${escapeHtml(u.code)}</span>
+                                                </div>
+                                                <div class="text-[10px] text-slate-400 mt-1">Demandé le : ${formatDate(u.requestedAt)}</div>
+                                            </div>
+                                            <div class="flex items-center gap-2 shrink-0">
+                                                <button type="button" data-approve-user="${escapeHtml(u.id)}"
+                                                    class="approve-user-btn bg-[#009E49] hover:bg-emerald-700 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs shadow transition cursor-pointer">
+                                                    ✅ Valider
+                                                </button>
+                                                <button type="button" data-delete-user="${escapeHtml(u.id)}"
+                                                    class="delete-user-btn bg-[#EF2B2D] hover:bg-red-700 text-white font-bold px-3.5 py-2.5 rounded-xl text-xs shadow transition cursor-pointer">
+                                                    ✕ Rejeter
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `}
+                        </div>
+
+                        <!-- Membres validés et mémorisés -->
+                        <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-200">
+                            <h3 class="text-lg font-black text-slate-900 flex items-center gap-2 mb-2">
+                                <span>✅</span> Étudiants validés & mémorisés (${approvedUsers.length})
+                            </h3>
+                            <p class="text-xs text-slate-500 mb-4">
+                                Le système reconnaît automatiquement leur email et leur code. Si vous cliquez sur « Supprimer l'accès », leur email et code sont effacés immédiatement.
+                            </p>
+                            ${approvedUsers.length === 0 ? `
+                                <div class="bg-slate-50 rounded-2xl p-6 text-center text-xs sm:text-sm text-slate-500">
+                                    Aucun étudiant validé pour le moment.
+                                </div>
+                            ` : `
+                                <div class="space-y-2.5 max-h-96 overflow-y-auto pr-1">
+                                    ${approvedUsers.map(u => `
+                                        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                                            <div class="min-w-0">
+                                                <div class="font-bold text-xs sm:text-sm text-slate-900 truncate">${escapeHtml(u.email)}</div>
+                                                <div class="text-[11px] text-slate-500">Code : <span class="font-mono font-bold text-slate-700">${escapeHtml(u.code)}</span></div>
+                                            </div>
+                                            <button type="button" data-delete-user="${escapeHtml(u.id)}"
+                                                class="delete-user-btn bg-red-100 hover:bg-[#EF2B2D] text-[#EF2B2D] hover:text-white font-bold px-3 py-2 rounded-xl text-xs transition shrink-0 cursor-pointer">
+                                                🗑️ Supprimer l'accès
+                                            </button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `}
+                        </div>
+                    </div>
+
+                    <!-- ONGLET 3 : AJOUTER & GÉRER LES COURS -->
+                    <div id="tab-panel-courses" class="${activeTab === 'courses' ? 'grid grid-cols-1 lg:grid-cols-12 gap-6' : 'hidden'}">
+                        <!-- Formulaire d'ajout de cours -->
+                        <div class="lg:col-span-7 bg-white rounded-3xl p-6 shadow-md border border-slate-200">
+                            <h3 class="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
+                                <span>➕</span> Publier un Nouveau Cours dans le Site
+                            </h3>
+                            <form id="admin-add-course-form" class="space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">1. Catégorie (Classe)</label>
+                                        <select id="admin-course-cat" required
+                                            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold bg-white">
+                                            ${categories.map(c => `<option value="${c.id}" ${c.id === defaultCat.id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">2. Matière</label>
+                                        <select id="admin-course-subj" required
+                                            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold bg-white">
+                                            ${defaultCat.subjects.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('')}
+                                            <option value="__CUSTOM__">+ Autre matière (saisir le nom)...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="custom-subject-wrapper" class="hidden">
+                                    <label class="block text-xs font-bold text-[#009E49] mb-1">Nom de la nouvelle matière</label>
+                                    <input type="text" id="admin-custom-subj-input" placeholder="Ex: FINANCES PUBLIQUES"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 bg-emerald-50/40 text-sm outline-none focus:ring-2 focus:ring-[#009E49]">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">3. Sous-ensemble (Rubrique cible)</label>
+                                    <select id="admin-course-subsec" required
+                                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold bg-white">
+                                        ${SUB_SECTIONS.map(s => `<option value="${s.id}">${s.icon} ${s.title}</option>`).join('')}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">4. Titre du Cours</label>
+                                    <input type="text" id="admin-course-title" required placeholder="Ex: Chapitre 1 - Introduction générale"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-[#009E49]">
+                                </div>
+
+                                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                                    <div class="text-xs font-extrabold text-slate-800">5. Fichier Audio, Vidéo ou PDF (Stocké dans IndexedDB sans limite)</div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-600 mb-1">Importer un fichier local (MP3, MP4, PDF...)</label>
+                                        <input type="file" id="admin-course-file" accept="audio/*,video/*,application/pdf"
+                                            class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-[#FCD116] hover:file:bg-slate-800 cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] font-bold text-slate-600 mb-1">Ou lien Vidéo / Audio externe (URL optionnelle)</label>
+                                        <input type="url" id="admin-course-media" placeholder="https://..."
+                                            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white outline-none focus:ring-2 focus:ring-[#009E49]">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">6. Description / Contenu texte complet du cours</label>
+                                    <textarea id="admin-course-content" rows="5" required placeholder="Saisissez le cours complet, le résumé ou les explications détaillées..."
+                                        class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-[#009E49]"></textarea>
+                                </div>
+
+                                <button type="submit" id="admin-publish-btn"
+                                    class="w-full bg-[#009E49] hover:bg-emerald-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition text-sm cursor-pointer">
+                                    Enregistrer et Publier le Cours ✅
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Colonne droite : Ajouter une matière + Liste des cours publiés -->
+                        <div class="lg:col-span-5 space-y-6">
+                            <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-200">
+                                <h3 class="text-base font-black text-slate-900 mb-3">📚 Ajouter une Matière à une Catégorie</h3>
+                                <form id="admin-add-subject-form" class="space-y-3">
+                                    <select id="admin-newsubj-cat" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold bg-white">
+                                        ${categories.map(c => `<option value="${c.id}" ${c.id === defaultCat.id ? 'selected' : ''}>${escapeHtml(c.name)}</option>`).join('')}
+                                    </select>
+                                    <input type="text" id="admin-newsubj-name" required placeholder="Nom de la matière (ex: FINANCES PUBLIQUES)"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm">
+                                    <button type="submit"
+                                        class="w-full bg-slate-900 hover:bg-slate-800 text-[#FCD116] font-bold py-2.5 rounded-xl text-xs sm:text-sm transition cursor-pointer">
+                                        + Ajouter la matière
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-200">
+                                <h3 class="text-base font-black text-slate-900 mb-3">🗂️ Cours enregistrés dans le site (${courses.length})</h3>
+                                <div class="space-y-2.5 max-h-96 overflow-y-auto pr-1">
+                                    ${courses.length === 0 ? `
+                                        <p class="text-xs text-slate-500 text-center py-4">Aucun cours publié.</p>
+                                    ` : courses.map(c => {
+                                        const subLabel = (SUB_SECTIONS.find(s => s.id === c.subSection) || {}).title || c.subSection;
+                                        return `
+                                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
+                                                <div class="min-w-0">
+                                                    <div class="text-[10px] font-extrabold text-[#009E49] uppercase">${escapeHtml(c.subject)} • ${escapeHtml(subLabel)}</div>
+                                                    <div class="text-xs font-bold text-slate-900 truncate">${escapeHtml(c.title)}</div>
+                                                </div>
+                                                <button type="button" data-delete-course="${escapeHtml(c.id)}"
+                                                    class="delete-course-btn bg-red-100 hover:bg-[#EF2B2D] text-[#EF2B2D] hover:text-white text-xs font-bold shrink-0 px-3 py-1.5 rounded-xl transition cursor-pointer">
+                                                    Supprimer
+                                                </button>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ONGLET 4 : NOTES & CRITIQUES DES ÉTUDIANTS -->
+                    <div id="tab-panel-feedbacks" class="${activeTab === 'feedbacks' ? 'bg-white rounded-3xl p-6 shadow-md border-t-4 border-[#EF2B2D]' : 'hidden'}">
+                        <h3 class="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
+                            <span>💬</span> Boîte de réception : Notes & Critiques des Étudiants (${feedbacks.length})
+                        </h3>
+                        ${feedbacks.length === 0 ? `
+                            <p class="text-xs sm:text-sm text-slate-500 bg-slate-50 p-6 rounded-2xl text-center">
+                                Aucune note ou critique envoyée par les étudiants pour le moment.
+                            </p>
+                        ` : `
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                ${feedbacks.map(fb => {
+                                    const subTitle = (SUB_SECTIONS.find(s => s.id === fb.subSectionId) || {}).title || fb.subSectionId;
+                                    return `
+                                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between gap-3">
+                                            <div>
+                                                <div class="flex items-center justify-between gap-2 mb-1">
+                                                    <span class="text-xs font-extrabold text-slate-900">${escapeHtml(fb.categoryName || '')} • ${escapeHtml(fb.subjectName)}</span>
+                                                    <span class="text-xs font-bold text-amber-500">${'⭐'.repeat(fb.rating || 5)}</span>
+                                                </div>
+                                                <div class="text-[11px] font-bold text-[#009E49] mb-2">${escapeHtml(subTitle)}</div>
+                                                <p class="text-xs sm:text-sm text-slate-700 bg-white p-3 rounded-xl border border-slate-100">"${escapeHtml(fb.comment)}"</p>
+                                            </div>
+                                            <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200/70">
+                                                <div class="text-[10px] text-slate-500">
+                                                    De : <strong>${escapeHtml(fb.userEmail)}</strong><br>${formatDate(fb.createdAt)}
+                                                </div>
+                                                <button type="button" data-delete-fb="${escapeHtml(fb.id)}"
+                                                    class="delete-fb-btn bg-emerald-100 hover:bg-[#009E49] text-[#009E49] hover:text-white font-bold px-3 py-1.5 rounded-xl text-xs transition cursor-pointer">
+                                                    ✓ Réglé / Supprimer
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+
+            // --- ATTACHEMENT FIABLE DE TOUS LES ÉVÉNEMENTS DU TABLEAU DE BORD ---
+            document.getElementById('admin-preview-site-btn').addEventListener('click', () => router.goHome());
+
+            root.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    router.openAdmin(btn.getAttribute('data-admin-tab'));
+                });
+            });
+
+            root.querySelectorAll('[data-jump-tab]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    router.openAdmin(btn.getAttribute('data-jump-tab'));
+                });
+            });
+   // Validation d'une demande d'inscription
+            root.querySelectorAll('.approve-user-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const userId = btn.getAttribute('data-approve-user');
+                    if (Store.approveUser(userId)) {
+                        showToast("✅ Étudiant validé ! Son email et son code sont mémorisés.");
+                        await renderApp();
+                    } else {
+                        showToast("Erreur lors de la validation.", "error");
+                    }
+                });
+            });
+
+            // Rejet ou suppression d'un utilisateur (efface email + code)
+            root.querySelectorAll('.delete-user-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const userId = btn.getAttribute('data-delete-user');
+                    if (Store.deleteUser(userId)) {
+                        showToast("🗑️ Accès supprimé : email et code effacés du système.", "warning");
+                        await renderApp();
+                    }
+                });
+            });
+
+            // Suppression d'un cours publié
+            root.querySelectorAll('.delete-course-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const courseId = btn.getAttribute('data-delete-course');
+                    await Store.deleteCourse(courseId);
+                    showToast("🗑️ Cours supprimé du site.", "warning");
+                    await renderApp();
+                });
+            });
+
+            // Suppression d'une critique réglée
+            root.querySelectorAll('.delete-fb-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const fbId = btn.getAttribute('data-delete-fb');
+                    Store.deleteFeedback(fbId);
+                    showToast("Note marquée comme réglée et supprimée.");
+                    await renderApp();
+                });
+            });
+
+            // Mise à jour dynamique des matières dans le formulaire d'ajout de cours
+            const catSelect = document.getElementById('admin-course-cat');
+            const subjSelect = document.getElementById('admin-course-subj');
+            const customWrapper = document.getElementById('custom-subject-wrapper');
+            const customInput = document.getElementById('admin-custom-subj-input');
+
+            catSelect.addEventListener('change', () => {
+                const selectedCat = Store.getCategories().find(c => c.id === catSelect.value);
+                if (selectedCat) {
+                    subjSelect.innerHTML = selectedCat.subjects.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('') +
+                        `<option value="__CUSTOM__">+ Autre matière (saisir le nom)...</option>`;
+                    customWrapper.classList.add('hidden');
+                    customInput.required = false;
+                }
+            });
+
+            subjSelect.addEventListener('change', () => {
+                if (subjSelect.value === '__CUSTOM__') {
+                    customWrapper.classList.remove('hidden');
+                    customInput.required = true;
+                } else {
+                    customWrapper.classList.add('hidden');
+                    customInput.required = false;
+                }
+            });
+
+            // Soumission du formulaire d'ajout de cours
+            document.getElementById('admin-add-course-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('admin-publish-btn');
+                const categoryId = catSelect.value;
+                let subject = subjSelect.value;
+                const subSection = document.getElementById('admin-course-subsec').value;
+                const title = document.getElementById('admin-course-title').value.trim();
+                const mediaUrl = document.getElementById('admin-course-media').value.trim();
+                const content = document.getElementById('admin-course-content').value.trim();
+                const fileInput = document.getElementById('admin-course-file');
+
+                if (subject === '__CUSTOM__') {
+                    const customName = customInput.value.trim().toUpperCase();
+                    if (!customName) {
+                        showToast("Veuillez saisir le nom de la nouvelle matière.", "error");
+                        return;
+                    }
+                    Store.addSubjectToCategory(categoryId, customName);
+                    subject = customName;
+                }
+
+                if (!title || !content) return;
+
+                try {
+                    btn.disabled = true;
+                    btn.textContent = "Enregistrement en cours...";
+
+                    let mediaDataUrl = '';
+                    let mediaMime = '';
+                    let mediaFileName = '';
+
+                    if (fileInput && fileInput.files && fileInput.files[0]) {
+                        const file = fileInput.files[0];
+                        mediaDataUrl = await readFileAsDataURL(file);
+                        mediaMime = file.type || '';
+                        mediaFileName = file.name || '';
+                    }
+
+                    await Store.addCourse({
+                        categoryId,
+                        subject,
+                        subSection,
+                        title,
+                        mediaUrl,
+                        mediaDataUrl,
+                        mediaMime,
+                        mediaFileName,
+                        content
+                    });
+
+                    showToast("✅ Cours enregistré et publié avec succès !");
+                    await renderApp();
+                } catch (err) {
+                    console.error(err);
+                    showToast("Erreur lors de la sauvegarde du fichier.", "error");
+                    btn.disabled = false;
+                    btn.textContent = "Enregistrer et Publier le Cours ✅";
+                }
+            });
+
+            // Soumission du formulaire d'ajout de matière
+            document.getElementById('admin-add-subject-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const catId = document.getElementById('admin-newsubj-cat').value;
+                const name = document.getElementById('admin-newsubj-name').value;
+                if (Store.addSubjectToCategory(catId, name)) {
+                    showToast("✅ Nouvelle matière ajoutée avec succès !");
+                    await renderApp();
+                } else {
+                    showToast("Veuillez entrer un nom de matière valide.", "warning");
+                }
+            });
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(reader.error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ============================================================================
+        // INITIALISATION AU CHARGEMENT
+        // ============================================================================
+        window.addEventListener('DOMContentLoaded', async () => {
+            document.getElementById('brand-home-btn').addEventListener('click', () => router.goHome());
+            await Store.init();
+            await renderApp();
+        });
     </script>
 </body>
 </html>
